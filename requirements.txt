@@ -12,3 +12,4 @@ mlflow
 statsmodels
 openpyxl
 ydata_profiling
+scikit-learn
