@@ -5,8 +5,13 @@ format: jb-book
 root: index
 chapters:
   - file: book/markdown
+    title: Introduction
   - file: book/notebooks
   - file: book/bibliography
+    title: References
+  - file: book/eda
+    title: Exploratory Data Analysis
+
 
 # Or you organize the TOC by parts
 
