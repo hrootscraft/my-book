@@ -6,12 +6,12 @@ root: index
 chapters:
   - file: book/markdown
     title: Introduction
-  - file: book/bibliography
-    title: References
   - file: book/1
     title: Normalize Database    
   - file: book/2
-    title: Exploratory Data Analysis and Preprocessing    
+    title: EDA and Preprocessing    
+  - file: book/3
+    title: Model Training
 
 
 # Or you organize the TOC by parts
