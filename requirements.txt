@@ -3,3 +3,12 @@ jupytext
 matplotlib
 numpy
 ghp-import
+pandas
+imblearn
+seaborn
+plotly
+xgboost
+mlflow  
+statsmodels
+openpyxl
+ydata_profiling
