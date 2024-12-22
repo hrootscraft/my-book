@@ -1,0 +1,1419 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Get data into a normalized form (3NF) &#8212; My Book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'book/1';</script>
+    <link rel="canonical" href="https://hrootscraft.github.io/my-book/book/1.html" />
+    <link rel="icon" href="../_static/fav.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="EDA - Exploratory Data Anlaysis" href="2.html" />
+    <link rel="prev" title="Final Project" href="markdown.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="My Book - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="My Book - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="markdown.html">Introduction</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Normalize Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2.html">EDA - Exploratory Data Anlaysis</a></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/hrootscraft/my-book/master?urlpath=tree/book/1.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/hrootscraft/my-book/blob/master/book/1.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/hrootscraft/my-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/hrootscraft/my-book/edit/main/book/1.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/hrootscraft/my-book/issues/new?title=Issue%20on%20page%20%2Fbook/1.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/book/1.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Get data into a normalized form (3NF)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="get-data-into-a-normalized-form-3nf">
+<h1>Get data into a normalized form (3NF)<a class="headerlink" href="#get-data-into-a-normalized-form-3nf" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpyxl</span> <span class="kn">import</span> <span class="n">load_workbook</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+
+<span class="n">xlsx_path</span> <span class="o">=</span> <span class="s2">&quot;telco_customers.xlsx&quot;</span>
+<span class="n">csv_path</span> <span class="o">=</span> <span class="s2">&quot;telco_customers.csv&quot;</span>
+
+<span class="n">wb</span> <span class="o">=</span> <span class="n">load_workbook</span><span class="p">(</span><span class="n">xlsx_path</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ws</span> <span class="o">=</span> <span class="n">wb</span><span class="o">.</span><span class="n">active</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">csv_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ws</span><span class="o">.</span><span class="n">iter_rows</span><span class="p">(</span><span class="n">values_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">h</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+<span class="c1"># now we have telco_customers.csv from the XLSX</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
+
+<span class="c1"># connect to SQLite (in-memory or file-based)</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;telco.db&#39;</span><span class="p">)</span>
+<span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create tables</span>
+<span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">CREATE TABLE Location (</span>
+<span class="s2">  ZipCode TEXT PRIMARY KEY,</span>
+<span class="s2">  Country TEXT,</span>
+<span class="s2">  State TEXT,</span>
+<span class="s2">  City TEXT,</span>
+<span class="s2">  Latitude REAL,</span>
+<span class="s2">  Longitude REAL</span>
+<span class="s2">);</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">CREATE TABLE Customer (</span>
+<span class="s2">    CustomerID TEXT PRIMARY KEY,</span>
+<span class="s2">    Gender TEXT,</span>
+<span class="s2">    SeniorCitizen TEXT,</span>
+<span class="s2">    Partner TEXT,</span>
+<span class="s2">    Dependents TEXT,</span>
+<span class="s2">    Churn TEXT,</span>
+<span class="s2">    ZipCode TEXT,</span>
+<span class="s2">    ChurnLabel TEXT,</span>
+<span class="s2">    ChurnValue INTEGER,</span>
+<span class="s2">    ChurnScore INTEGER,</span>
+<span class="s2">    CLTV INTEGER,</span>
+<span class="s2">    ChurnReason TEXT,</span>
+<span class="s2">    FOREIGN KEY (ZipCode) REFERENCES Location(ZipCode)</span>
+<span class="s2">);</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">CREATE TABLE Services (</span>
+<span class="s2">  CustomerID TEXT PRIMARY KEY,</span>
+<span class="s2">  TenureMonths INTEGER,</span>
+<span class="s2">  PhoneService TEXT,</span>
+<span class="s2">  MultipleLines TEXT,</span>
+<span class="s2">  InternetService TEXT,</span>
+<span class="s2">  OnlineSecurity TEXT,</span>
+<span class="s2">  OnlineBackup TEXT,</span>
+<span class="s2">  DeviceProtection TEXT,</span>
+<span class="s2">  TechSupport TEXT,</span>
+<span class="s2">  StreamingTV TEXT,</span>
+<span class="s2">  StreamingMovies TEXT,</span>
+<span class="s2">  FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)</span>
+<span class="s2">);</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">CREATE TABLE Billing (</span>
+<span class="s2">  CustomerID TEXT PRIMARY KEY,</span>
+<span class="s2">  Contract TEXT,</span>
+<span class="s2">  PaperlessBilling TEXT,</span>
+<span class="s2">  PaymentMethod TEXT,</span>
+<span class="s2">  MonthlyCharges REAL,</span>
+<span class="s2">  TotalCharges REAL,</span>
+<span class="s2">  FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)</span>
+<span class="s2">);</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">OperationalError</span><span class="g g-Whitespace">                          </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># create tables</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span><span class="s2"> CREATE TABLE Location (</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span><span class="s2">   ZipCode TEXT PRIMARY KEY,</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span><span class="s2">   Country TEXT,</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span><span class="s2">   State TEXT,</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span><span class="s2">   City TEXT,</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span><span class="s2">   Latitude REAL,</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span><span class="s2">   Longitude REAL</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span><span class="s2"> );</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span><span class="s2"> &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span><span class="s2"> CREATE TABLE Customer (</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span><span class="s2">     CustomerID TEXT PRIMARY KEY,</span>
+<span class="s2">   (...)</span>
+<span class="g g-Whitespace">     </span><span class="mi">28</span><span class="s2"> );</span>
+<span class="g g-Whitespace">     </span><span class="mi">29</span><span class="s2"> &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">31</span> <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">32</span><span class="s2"> CREATE TABLE Services (</span>
+<span class="g g-Whitespace">     </span><span class="mi">33</span><span class="s2">   CustomerID TEXT PRIMARY KEY,</span>
+<span class="s2">   (...)</span>
+<span class="g g-Whitespace">     </span><span class="mi">45</span><span class="s2"> );</span>
+<span class="g g-Whitespace">     </span><span class="mi">46</span><span class="s2"> &quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="ne">OperationalError</span>: table Location already exists
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cur.execute(&quot;DROP TABLE Location;&quot;)</span>
+<span class="c1"># cur.execute(&quot;DROP TABLE Billing;&quot;)</span>
+<span class="c1"># cur.execute(&quot;DROP TABLE Services;&quot;)</span>
+<span class="c1"># cur.execute(&quot;DROP TABLE Customer;&quot;)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sqlite3.Cursor at 0x76d36c3afcc0&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># read CSV and insert data</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;telco_customers.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="c1"># to avoid inserting duplicates into Location, keep track of seen ZipCodes</span>
+    <span class="n">seen_zipcodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+        <span class="n">customer_id</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;CustomerID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="c1"># prepare location data</span>
+        <span class="n">zip_code</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;Zip Code&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">country</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;State&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">city</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;City&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">latitude</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;Latitude&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Latitude&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">longitude</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;Longitude&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Longitude&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="c1"># insert into Location only if not already inserted</span>
+        <span class="k">if</span> <span class="n">zip_code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen_zipcodes</span><span class="p">:</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                INSERT OR IGNORE INTO Location (ZipCode, Country, State, City, Latitude, Longitude)</span>
+<span class="s2">                VALUES (?, ?, ?, ?, ?, ?);</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">zip_code</span><span class="p">,</span> <span class="n">country</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">city</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">))</span>
+            <span class="n">seen_zipcodes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">zip_code</span><span class="p">)</span>
+
+        <span class="c1"># prepare customer data</span>
+        <span class="n">gender</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">senior_citizen</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Senior Citizen&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">partner</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Partner&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">dependents</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Dependents&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">churn_label</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Churn Label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">churn_value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;Churn Value&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Churn Value&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">churn_score</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;Churn Score&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Churn Score&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">cltv</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;CLTV&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;CLTV&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">churn_reason</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Churn Reason&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Churn Reason&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            INSERT OR REPLACE INTO Customer (</span>
+<span class="s2">                CustomerID, Gender, SeniorCitizen, Partner, Dependents,</span>
+<span class="s2">                ChurnLabel, ChurnValue, ChurnScore, CLTV, ChurnReason, ZipCode</span>
+<span class="s2">            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">customer_id</span><span class="p">,</span> <span class="n">gender</span><span class="p">,</span> <span class="n">senior_citizen</span><span class="p">,</span> <span class="n">partner</span><span class="p">,</span> <span class="n">dependents</span><span class="p">,</span> <span class="n">churn_label</span><span class="p">,</span> <span class="n">churn_value</span><span class="p">,</span> <span class="n">churn_score</span><span class="p">,</span> <span class="n">cltv</span><span class="p">,</span> <span class="n">churn_reason</span><span class="p">,</span> <span class="n">zip_code</span><span class="p">))</span>
+
+        <span class="c1"># prepare services data </span>
+        <span class="n">tenure_months</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;Tenure Months&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Tenure Months&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">phone_service</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Phone Service&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">multiple_lines</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Multiple Lines&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">internet_service</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Internet Service&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">online_security</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Online Security&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">online_backup</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Online Backup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">device_protection</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Device Protection&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">tech_support</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Tech Support&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">streaming_tv</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Streaming TV&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">streaming_movies</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Streaming Movies&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            INSERT OR REPLACE INTO Services (</span>
+<span class="s2">                CustomerID, TenureMonths, PhoneService, MultipleLines, InternetService,</span>
+<span class="s2">                OnlineSecurity, OnlineBackup, DeviceProtection, TechSupport, StreamingTV, StreamingMovies</span>
+<span class="s2">            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">customer_id</span><span class="p">,</span> <span class="n">tenure_months</span><span class="p">,</span> <span class="n">phone_service</span><span class="p">,</span> <span class="n">multiple_lines</span><span class="p">,</span> <span class="n">internet_service</span><span class="p">,</span>
+              <span class="n">online_security</span><span class="p">,</span> <span class="n">online_backup</span><span class="p">,</span> <span class="n">device_protection</span><span class="p">,</span> <span class="n">tech_support</span><span class="p">,</span> <span class="n">streaming_tv</span><span class="p">,</span> <span class="n">streaming_movies</span><span class="p">))</span>
+
+        <span class="c1"># prepare billing data</span>
+        <span class="n">contract</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Contract&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">paperless_billing</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Paperless Billing&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">payment_method</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Payment Method&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">monthly_charges</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;Monthly Charges&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Monthly Charges&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">total_charges_raw</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Total Charges&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">total_charges</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">total_charges_raw</span><span class="p">)</span> <span class="k">if</span> <span class="n">total_charges_raw</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            INSERT OR REPLACE INTO Billing (</span>
+<span class="s2">                CustomerID, Contract, PaperlessBilling, PaymentMethod, MonthlyCharges, TotalCharges</span>
+<span class="s2">            ) VALUES (?, ?, ?, ?, ?, ?);</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">customer_id</span><span class="p">,</span> <span class="n">contract</span><span class="p">,</span> <span class="n">paperless_billing</span><span class="p">,</span> <span class="n">payment_method</span><span class="p">,</span> <span class="n">monthly_charges</span><span class="p">,</span> <span class="n">total_charges</span><span class="p">))</span>
+
+<span class="c1"># commit changes</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># JOIN tables and load into Pandas DataFrame for analysis</span>
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SELECT</span>
+<span class="s2">    c.CustomerID,</span>
+<span class="s2">    c.Gender,</span>
+<span class="s2">    c.SeniorCitizen,</span>
+<span class="s2">    c.Partner,</span>
+<span class="s2">    c.Dependents,</span>
+<span class="s2">    c.ChurnLabel,</span>
+<span class="s2">    c.ChurnValue,</span>
+<span class="s2">    c.ChurnScore,</span>
+<span class="s2">    c.CLTV,</span>
+<span class="s2">    c.ChurnReason,</span>
+<span class="s2">    l.Country,</span>
+<span class="s2">    l.State,</span>
+<span class="s2">    l.City,</span>
+<span class="s2">    l.ZipCode,</span>
+<span class="s2">    l.Latitude,</span>
+<span class="s2">    l.Longitude,</span>
+<span class="s2">    s.TenureMonths,</span>
+<span class="s2">    s.PhoneService,</span>
+<span class="s2">    s.MultipleLines,</span>
+<span class="s2">    s.InternetService,</span>
+<span class="s2">    s.OnlineSecurity,</span>
+<span class="s2">    s.OnlineBackup,</span>
+<span class="s2">    s.DeviceProtection,</span>
+<span class="s2">    s.TechSupport,</span>
+<span class="s2">    s.StreamingTV,</span>
+<span class="s2">    s.StreamingMovies,</span>
+<span class="s2">    b.Contract,</span>
+<span class="s2">    b.PaperlessBilling,</span>
+<span class="s2">    b.PaymentMethod,</span>
+<span class="s2">    b.MonthlyCharges,</span>
+<span class="s2">    b.TotalCharges</span>
+<span class="s2">FROM Customer c</span>
+<span class="s2">JOIN Location l ON c.ZipCode = l.ZipCode</span>
+<span class="s2">JOIN Services s ON c.CustomerID = s.CustomerID</span>
+<span class="s2">JOIN Billing b ON c.CustomerID = b.CustomerID;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">normalized_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">normalized_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>CustomerID</th>
+      <th>Gender</th>
+      <th>SeniorCitizen</th>
+      <th>Partner</th>
+      <th>Dependents</th>
+      <th>ChurnLabel</th>
+      <th>ChurnValue</th>
+      <th>ChurnScore</th>
+      <th>CLTV</th>
+      <th>ChurnReason</th>
+      <th>...</th>
+      <th>OnlineBackup</th>
+      <th>DeviceProtection</th>
+      <th>TechSupport</th>
+      <th>StreamingTV</th>
+      <th>StreamingMovies</th>
+      <th>Contract</th>
+      <th>PaperlessBilling</th>
+      <th>PaymentMethod</th>
+      <th>MonthlyCharges</th>
+      <th>TotalCharges</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>3668-QPYBK</td>
+      <td>Male</td>
+      <td>no</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>1</td>
+      <td>86</td>
+      <td>3239</td>
+      <td>Competitor made better offer</td>
+      <td>...</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Month-to-month</td>
+      <td>Yes</td>
+      <td>Mailed check</td>
+      <td>53.85</td>
+      <td>108.15</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>9237-HQITU</td>
+      <td>Female</td>
+      <td>no</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>1</td>
+      <td>67</td>
+      <td>2701</td>
+      <td>Moved</td>
+      <td>...</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Month-to-month</td>
+      <td>Yes</td>
+      <td>Electronic check</td>
+      <td>70.70</td>
+      <td>151.65</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>9305-CDSKC</td>
+      <td>Female</td>
+      <td>no</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>1</td>
+      <td>86</td>
+      <td>5372</td>
+      <td>Moved</td>
+      <td>...</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Month-to-month</td>
+      <td>Yes</td>
+      <td>Electronic check</td>
+      <td>99.65</td>
+      <td>820.50</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>7892-POOKP</td>
+      <td>Female</td>
+      <td>no</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>1</td>
+      <td>84</td>
+      <td>5003</td>
+      <td>Moved</td>
+      <td>...</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Month-to-month</td>
+      <td>Yes</td>
+      <td>Electronic check</td>
+      <td>104.80</td>
+      <td>3046.05</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0280-XJGEX</td>
+      <td>Male</td>
+      <td>no</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>1</td>
+      <td>89</td>
+      <td>5340</td>
+      <td>Competitor had better devices</td>
+      <td>...</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Month-to-month</td>
+      <td>Yes</td>
+      <td>Bank transfer (automatic)</td>
+      <td>103.70</td>
+      <td>5036.30</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>7038</th>
+      <td>2569-WGERO</td>
+      <td>Female</td>
+      <td>no</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>0</td>
+      <td>45</td>
+      <td>5306</td>
+      <td></td>
+      <td>...</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>Two year</td>
+      <td>Yes</td>
+      <td>Bank transfer (automatic)</td>
+      <td>21.15</td>
+      <td>1419.40</td>
+    </tr>
+    <tr>
+      <th>7039</th>
+      <td>6840-RESVB</td>
+      <td>Male</td>
+      <td>no</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>0</td>
+      <td>59</td>
+      <td>2140</td>
+      <td></td>
+      <td>...</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>One year</td>
+      <td>Yes</td>
+      <td>Mailed check</td>
+      <td>84.80</td>
+      <td>1990.50</td>
+    </tr>
+    <tr>
+      <th>7040</th>
+      <td>2234-XADUH</td>
+      <td>Female</td>
+      <td>no</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>0</td>
+      <td>71</td>
+      <td>5560</td>
+      <td></td>
+      <td>...</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>One year</td>
+      <td>Yes</td>
+      <td>Credit card (automatic)</td>
+      <td>103.20</td>
+      <td>7362.90</td>
+    </tr>
+    <tr>
+      <th>7041</th>
+      <td>4801-JZAZL</td>
+      <td>Female</td>
+      <td>no</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>0</td>
+      <td>59</td>
+      <td>2793</td>
+      <td></td>
+      <td>...</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Month-to-month</td>
+      <td>Yes</td>
+      <td>Electronic check</td>
+      <td>29.60</td>
+      <td>346.45</td>
+    </tr>
+    <tr>
+      <th>7042</th>
+      <td>3186-AJIEK</td>
+      <td>Male</td>
+      <td>no</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>0</td>
+      <td>38</td>
+      <td>5097</td>
+      <td></td>
+      <td>...</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Two year</td>
+      <td>Yes</td>
+      <td>Bank transfer (automatic)</td>
+      <td>105.65</td>
+      <td>6844.50</td>
+    </tr>
+  </tbody>
+</table>
+<p>7043 rows × 31 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">report</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">unique_values</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">n_unique_values</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+        <span class="n">data_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+        <span class="n">unique_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()[:</span><span class="mi">5</span><span class="p">])</span>
+        <span class="n">n_unique_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Column&#39;</span><span class="p">:</span> <span class="n">cols</span><span class="p">,</span> <span class="s1">&#39;data_type&#39;</span><span class="p">:</span> <span class="n">data_types</span><span class="p">,</span> <span class="s1">&#39;unique_values&#39;</span><span class="p">:</span> <span class="n">unique_values</span><span class="p">,</span> <span class="s1">&#39;n_unique_values&#39;</span><span class="p">:</span> <span class="n">n_unique_values</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">report</span><span class="p">(</span><span class="n">normalized_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Column</th>
+      <th>data_type</th>
+      <th>unique_values</th>
+      <th>n_unique_values</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>CustomerID</td>
+      <td>object</td>
+      <td>[3668-QPYBK, 9237-HQITU, 9305-CDSKC, 7892-POOK...</td>
+      <td>7043</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Gender</td>
+      <td>object</td>
+      <td>[Male, Female]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>SeniorCitizen</td>
+      <td>object</td>
+      <td>[no, yes]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Partner</td>
+      <td>object</td>
+      <td>[No, Yes]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Dependents</td>
+      <td>object</td>
+      <td>[No, Yes]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>ChurnLabel</td>
+      <td>object</td>
+      <td>[Yes, No]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>ChurnValue</td>
+      <td>int64</td>
+      <td>[1, 0]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>ChurnScore</td>
+      <td>int64</td>
+      <td>[86, 67, 84, 89, 78]</td>
+      <td>85</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>CLTV</td>
+      <td>int64</td>
+      <td>[3239, 2701, 5372, 5003, 5340]</td>
+      <td>3438</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>ChurnReason</td>
+      <td>object</td>
+      <td>[Competitor made better offer, Moved, Competit...</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Country</td>
+      <td>object</td>
+      <td>[United States]</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>State</td>
+      <td>object</td>
+      <td>[California]</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>City</td>
+      <td>object</td>
+      <td>[Los Angeles, Beverly Hills, Huntington Park, ...</td>
+      <td>1129</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>ZipCode</td>
+      <td>object</td>
+      <td>[90003, 90005, 90006, 90010, 90015]</td>
+      <td>1652</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Latitude</td>
+      <td>float64</td>
+      <td>[33.964131, 34.059281, 34.048013, 34.062125, 3...</td>
+      <td>1652</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Longitude</td>
+      <td>float64</td>
+      <td>[-118.272783, -118.30742, -118.293953, -118.31...</td>
+      <td>1651</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>TenureMonths</td>
+      <td>int64</td>
+      <td>[2, 8, 28, 49, 10]</td>
+      <td>73</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>PhoneService</td>
+      <td>object</td>
+      <td>[Yes, No]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>MultipleLines</td>
+      <td>object</td>
+      <td>[No, Yes, No phone service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>InternetService</td>
+      <td>object</td>
+      <td>[DSL, Fiber optic, No]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>OnlineSecurity</td>
+      <td>object</td>
+      <td>[Yes, No, No internet service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>OnlineBackup</td>
+      <td>object</td>
+      <td>[Yes, No, No internet service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>DeviceProtection</td>
+      <td>object</td>
+      <td>[No, Yes, No internet service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>TechSupport</td>
+      <td>object</td>
+      <td>[No, Yes, No internet service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>StreamingTV</td>
+      <td>object</td>
+      <td>[No, Yes, No internet service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>StreamingMovies</td>
+      <td>object</td>
+      <td>[No, Yes, No internet service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Contract</td>
+      <td>object</td>
+      <td>[Month-to-month, Two year, One year]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>PaperlessBilling</td>
+      <td>object</td>
+      <td>[Yes, No]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>PaymentMethod</td>
+      <td>object</td>
+      <td>[Mailed check, Electronic check, Bank transfer...</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>MonthlyCharges</td>
+      <td>float64</td>
+      <td>[53.85, 70.7, 99.65, 104.8, 103.7]</td>
+      <td>1585</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>TotalCharges</td>
+      <td>float64</td>
+      <td>[108.15, 151.65, 820.5, 3046.05, 5036.3]</td>
+      <td>6530</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The <em>Lat Lon</em> and <em>Count</em> column are dropped because they do not add any value to our experiment.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">normalized_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;normalized_data.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./book"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="markdown.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Final Project</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">EDA - Exploratory Data Anlaysis</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rutuja Bhure
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

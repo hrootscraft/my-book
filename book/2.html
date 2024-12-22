@@ -1,0 +1,2849 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>EDA - Exploratory Data Anlaysis &#8212; My Book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'book/2';</script>
+    <link rel="canonical" href="https://hrootscraft.github.io/my-book/book/2.html" />
+    <link rel="icon" href="../_static/fav.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Get data into a normalized form (3NF)" href="1.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="My Book - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="My Book - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="markdown.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1.html">Normalize Database</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">EDA - Exploratory Data Anlaysis</a></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/hrootscraft/my-book/master?urlpath=tree/book/2.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/hrootscraft/my-book/blob/master/book/2.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/hrootscraft/my-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/hrootscraft/my-book/edit/main/book/2.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/hrootscraft/my-book/issues/new?title=Issue%20on%20page%20%2Fbook/2.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/book/2.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>EDA - Exploratory Data Anlaysis</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">EDA - Exploratory Data Anlaysis</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#churn-distribution">Churn Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#payment-method-distribution">Payment Method Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-features-against-target">Categorical features against Target</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#working-out-the-bar-chart-function">Working out the bar chart function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-bar-chart-function">Defining bar chart function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bar-plots-cat-vs-target">Bar Plots (Cat Vs. Target)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numerical-features-against-target">Numerical features against Target</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocessing-pipeline">PREPROCESSING PIPELINE:</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="eda-exploratory-data-anlaysis">
+<h1>EDA - Exploratory Data Anlaysis<a class="headerlink" href="#eda-exploratory-data-anlaysis" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;normalized_data.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>CustomerID</th>
+      <th>Gender</th>
+      <th>SeniorCitizen</th>
+      <th>Partner</th>
+      <th>Dependents</th>
+      <th>ChurnLabel</th>
+      <th>ChurnValue</th>
+      <th>ChurnScore</th>
+      <th>CLTV</th>
+      <th>ChurnReason</th>
+      <th>...</th>
+      <th>OnlineBackup</th>
+      <th>DeviceProtection</th>
+      <th>TechSupport</th>
+      <th>StreamingTV</th>
+      <th>StreamingMovies</th>
+      <th>Contract</th>
+      <th>PaperlessBilling</th>
+      <th>PaymentMethod</th>
+      <th>MonthlyCharges</th>
+      <th>TotalCharges</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>3668-QPYBK</td>
+      <td>Male</td>
+      <td>no</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>1</td>
+      <td>86</td>
+      <td>3239</td>
+      <td>Competitor made better offer</td>
+      <td>...</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Month-to-month</td>
+      <td>Yes</td>
+      <td>Mailed check</td>
+      <td>53.85</td>
+      <td>108.15</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>9237-HQITU</td>
+      <td>Female</td>
+      <td>no</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>1</td>
+      <td>67</td>
+      <td>2701</td>
+      <td>Moved</td>
+      <td>...</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Month-to-month</td>
+      <td>Yes</td>
+      <td>Electronic check</td>
+      <td>70.70</td>
+      <td>151.65</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>9305-CDSKC</td>
+      <td>Female</td>
+      <td>no</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>1</td>
+      <td>86</td>
+      <td>5372</td>
+      <td>Moved</td>
+      <td>...</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Month-to-month</td>
+      <td>Yes</td>
+      <td>Electronic check</td>
+      <td>99.65</td>
+      <td>820.50</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>7892-POOKP</td>
+      <td>Female</td>
+      <td>no</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>1</td>
+      <td>84</td>
+      <td>5003</td>
+      <td>Moved</td>
+      <td>...</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Month-to-month</td>
+      <td>Yes</td>
+      <td>Electronic check</td>
+      <td>104.80</td>
+      <td>3046.05</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0280-XJGEX</td>
+      <td>Male</td>
+      <td>no</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>1</td>
+      <td>89</td>
+      <td>5340</td>
+      <td>Competitor had better devices</td>
+      <td>...</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Month-to-month</td>
+      <td>Yes</td>
+      <td>Bank transfer (automatic)</td>
+      <td>103.70</td>
+      <td>5036.30</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>7038</th>
+      <td>2569-WGERO</td>
+      <td>Female</td>
+      <td>no</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>0</td>
+      <td>45</td>
+      <td>5306</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>Two year</td>
+      <td>Yes</td>
+      <td>Bank transfer (automatic)</td>
+      <td>21.15</td>
+      <td>1419.40</td>
+    </tr>
+    <tr>
+      <th>7039</th>
+      <td>6840-RESVB</td>
+      <td>Male</td>
+      <td>no</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>0</td>
+      <td>59</td>
+      <td>2140</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>One year</td>
+      <td>Yes</td>
+      <td>Mailed check</td>
+      <td>84.80</td>
+      <td>1990.50</td>
+    </tr>
+    <tr>
+      <th>7040</th>
+      <td>2234-XADUH</td>
+      <td>Female</td>
+      <td>no</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>0</td>
+      <td>71</td>
+      <td>5560</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>One year</td>
+      <td>Yes</td>
+      <td>Credit card (automatic)</td>
+      <td>103.20</td>
+      <td>7362.90</td>
+    </tr>
+    <tr>
+      <th>7041</th>
+      <td>4801-JZAZL</td>
+      <td>Female</td>
+      <td>no</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>0</td>
+      <td>59</td>
+      <td>2793</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Month-to-month</td>
+      <td>Yes</td>
+      <td>Electronic check</td>
+      <td>29.60</td>
+      <td>346.45</td>
+    </tr>
+    <tr>
+      <th>7042</th>
+      <td>3186-AJIEK</td>
+      <td>Male</td>
+      <td>no</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>0</td>
+      <td>38</td>
+      <td>5097</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Two year</td>
+      <td>Yes</td>
+      <td>Bank transfer (automatic)</td>
+      <td>105.65</td>
+      <td>6844.50</td>
+    </tr>
+  </tbody>
+</table>
+<p>7043 rows × 31 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 7043 entries, 0 to 7042
+Data columns (total 31 columns):
+ #   Column            Non-Null Count  Dtype  
+---  ------            --------------  -----  
+ 0   CustomerID        7043 non-null   object 
+ 1   Gender            7043 non-null   object 
+ 2   SeniorCitizen     7043 non-null   object 
+ 3   Partner           7043 non-null   object 
+ 4   Dependents        7043 non-null   object 
+ 5   ChurnLabel        7043 non-null   object 
+ 6   ChurnValue        7043 non-null   int64  
+ 7   ChurnScore        7043 non-null   int64  
+ 8   CLTV              7043 non-null   int64  
+ 9   ChurnReason       1869 non-null   object 
+ 10  Country           7043 non-null   object 
+ 11  State             7043 non-null   object 
+ 12  City              7043 non-null   object 
+ 13  ZipCode           7043 non-null   int64  
+ 14  Latitude          7043 non-null   float64
+ 15  Longitude         7043 non-null   float64
+ 16  TenureMonths      7043 non-null   int64  
+ 17  PhoneService      7043 non-null   object 
+ 18  MultipleLines     7043 non-null   object 
+ 19  InternetService   7043 non-null   object 
+ 20  OnlineSecurity    7043 non-null   object 
+ 21  OnlineBackup      7043 non-null   object 
+ 22  DeviceProtection  7043 non-null   object 
+ 23  TechSupport       7043 non-null   object 
+ 24  StreamingTV       7043 non-null   object 
+ 25  StreamingMovies   7043 non-null   object 
+ 26  Contract          7043 non-null   object 
+ 27  PaperlessBilling  7043 non-null   object 
+ 28  PaymentMethod     7043 non-null   object 
+ 29  MonthlyCharges    7043 non-null   float64
+ 30  TotalCharges      7032 non-null   float64
+dtypes: float64(4), int64(5), object(22)
+memory usage: 1.7+ MB
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;ChurnReason&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;Competitor made better offer&#39;, &#39;Moved&#39;,
+       &#39;Competitor had better devices&#39;,
+       &#39;Competitor offered higher download speeds&#39;,
+       &#39;Competitor offered more data&#39;, &#39;Price too high&#39;,
+       &#39;Product dissatisfaction&#39;, &#39;Service dissatisfaction&#39;,
+       &#39;Lack of self-service on Website&#39;, &#39;Network reliability&#39;,
+       &#39;Limited range of services&#39;,
+       &#39;Lack of affordable download/upload speed&#39;,
+       &#39;Long distance charges&#39;, &#39;Extra data charges&#39;, &quot;Don&#39;t know&quot;,
+       &#39;Poor expertise of online support&#39;,
+       &#39;Poor expertise of phone support&#39;, &#39;Attitude of service provider&#39;,
+       &#39;Attitude of support person&#39;, &#39;Deceased&#39;, nan], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">report</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">unique_values</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">n_unique_values</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+        <span class="n">data_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+        <span class="n">unique_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()[:</span><span class="mi">5</span><span class="p">])</span>
+        <span class="n">n_unique_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Column&#39;</span><span class="p">:</span> <span class="n">cols</span><span class="p">,</span> <span class="s1">&#39;data_type&#39;</span><span class="p">:</span> <span class="n">data_types</span><span class="p">,</span> <span class="s1">&#39;unique_values&#39;</span><span class="p">:</span> <span class="n">unique_values</span><span class="p">,</span> <span class="s1">&#39;n_unique_values&#39;</span><span class="p">:</span> <span class="n">n_unique_values</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">report</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Column</th>
+      <th>data_type</th>
+      <th>unique_values</th>
+      <th>n_unique_values</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>CustomerID</td>
+      <td>object</td>
+      <td>[3668-QPYBK, 9237-HQITU, 9305-CDSKC, 7892-POOK...</td>
+      <td>7043</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Gender</td>
+      <td>object</td>
+      <td>[Male, Female]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>SeniorCitizen</td>
+      <td>object</td>
+      <td>[no, yes]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Partner</td>
+      <td>object</td>
+      <td>[No, Yes]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Dependents</td>
+      <td>object</td>
+      <td>[No, Yes]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>ChurnLabel</td>
+      <td>object</td>
+      <td>[Yes, No]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>ChurnValue</td>
+      <td>int64</td>
+      <td>[1, 0]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>ChurnScore</td>
+      <td>int64</td>
+      <td>[86, 67, 84, 89, 78]</td>
+      <td>85</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>CLTV</td>
+      <td>int64</td>
+      <td>[3239, 2701, 5372, 5003, 5340]</td>
+      <td>3438</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>ChurnReason</td>
+      <td>object</td>
+      <td>[Competitor made better offer, Moved, Competit...</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Country</td>
+      <td>object</td>
+      <td>[United States]</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>State</td>
+      <td>object</td>
+      <td>[California]</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>City</td>
+      <td>object</td>
+      <td>[Los Angeles, Beverly Hills, Huntington Park, ...</td>
+      <td>1129</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>ZipCode</td>
+      <td>int64</td>
+      <td>[90003, 90005, 90006, 90010, 90015]</td>
+      <td>1652</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Latitude</td>
+      <td>float64</td>
+      <td>[33.964131, 34.059281, 34.048013, 34.062125, 3...</td>
+      <td>1652</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Longitude</td>
+      <td>float64</td>
+      <td>[-118.272783, -118.30742, -118.293953, -118.31...</td>
+      <td>1651</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>TenureMonths</td>
+      <td>int64</td>
+      <td>[2, 8, 28, 49, 10]</td>
+      <td>73</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>PhoneService</td>
+      <td>object</td>
+      <td>[Yes, No]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>MultipleLines</td>
+      <td>object</td>
+      <td>[No, Yes, No phone service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>InternetService</td>
+      <td>object</td>
+      <td>[DSL, Fiber optic, No]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>OnlineSecurity</td>
+      <td>object</td>
+      <td>[Yes, No, No internet service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>OnlineBackup</td>
+      <td>object</td>
+      <td>[Yes, No, No internet service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>DeviceProtection</td>
+      <td>object</td>
+      <td>[No, Yes, No internet service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>TechSupport</td>
+      <td>object</td>
+      <td>[No, Yes, No internet service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>StreamingTV</td>
+      <td>object</td>
+      <td>[No, Yes, No internet service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>StreamingMovies</td>
+      <td>object</td>
+      <td>[No, Yes, No internet service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Contract</td>
+      <td>object</td>
+      <td>[Month-to-month, Two year, One year]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>PaperlessBilling</td>
+      <td>object</td>
+      <td>[Yes, No]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>PaymentMethod</td>
+      <td>object</td>
+      <td>[Mailed check, Electronic check, Bank transfer...</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>MonthlyCharges</td>
+      <td>float64</td>
+      <td>[53.85, 70.7, 99.65, 104.8, 103.7]</td>
+      <td>1585</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>TotalCharges</td>
+      <td>float64</td>
+      <td>[108.15, 151.65, 820.5, 3046.05, 5036.3]</td>
+      <td>6530</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ydata_profiling</span> <span class="kn">import</span> <span class="n">ProfileReport</span>
+<span class="n">profile</span> <span class="o">=</span> <span class="n">ProfileReport</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;My Data Profiling Report&quot;</span><span class="p">,</span> <span class="n">explorative</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dark_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># to view the report in a Jupyter notebook</span>
+<span class="n">profile</span><span class="o">.</span><span class="n">to_notebook_iframe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.9.20/x64/lib/python3.9/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValidationError</span><span class="g g-Whitespace">                           </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">from</span> <span class="nn">ydata_profiling</span> <span class="kn">import</span> <span class="n">ProfileReport</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">profile</span> <span class="o">=</span> <span class="n">ProfileReport</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;My Data Profiling Report&quot;</span><span class="p">,</span> <span class="n">explorative</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dark_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="c1"># to view the report in a Jupyter notebook</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">profile</span><span class="o">.</span><span class="n">to_notebook_iframe</span><span class="p">()</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.20/x64/lib/python3.9/site-packages/ydata_profiling/profile_report.py:142,</span> in <span class="ni">ProfileReport.__init__</span><span class="nt">(self, df, minimal, tsmode, sortby, sensitive, explorative, sample, config_file, lazy, typeset, summarizer, config, type_schema, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">137</span>     <span class="n">report_config</span> <span class="o">=</span> <span class="n">report_config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">138</span>         <span class="n">Settings</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">shorthands</span><span class="p">)</span><span class="o">.</span><span class="n">dict</span><span class="p">(</span><span class="n">exclude_defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">139</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">141</span> <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">142</span>     <span class="n">report_config</span> <span class="o">=</span> <span class="n">report_config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">144</span> <span class="n">report_config</span><span class="o">.</span><span class="n">vars</span><span class="o">.</span><span class="n">timeseries</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="n">tsmode</span>
+<span class="g g-Whitespace">    </span><span class="mi">145</span> <span class="k">if</span> <span class="n">tsmode</span> <span class="ow">and</span> <span class="n">sortby</span><span class="p">:</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.20/x64/lib/python3.9/site-packages/ydata_profiling/config.py:358,</span> in <span class="ni">Settings.update</span><span class="nt">(self, updates)</span>
+<span class="g g-Whitespace">    </span><span class="mi">356</span> <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">updates</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Settings&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">357</span>     <span class="n">update</span> <span class="o">=</span> <span class="n">_merge_dictionaries</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span> <span class="n">updates</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">358</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_obj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">update</span><span class="o">=</span><span class="n">update</span><span class="p">))</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.20/x64/lib/python3.9/site-packages/pydantic/v1/main.py:526,</span> in <span class="ni">BaseModel.parse_obj</span><span class="nt">(cls, obj)</span>
+<span class="g g-Whitespace">    </span><span class="mi">524</span>         <span class="n">exc</span> <span class="o">=</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1"> expected dict not </span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">525</span>         <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">([</span><span class="n">ErrorWrapper</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">ROOT_KEY</span><span class="p">)],</span> <span class="bp">cls</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+<span class="ne">--&gt; </span><span class="mi">526</span> <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">obj</span><span class="p">)</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.20/x64/lib/python3.9/site-packages/pydantic/v1/env_settings.py:40,</span> in <span class="ni">BaseSettings.__init__</span><span class="nt">(__pydantic_self__, _env_file, _env_file_encoding, _env_nested_delimiter, _secrets_dir, **values)</span>
+<span class="g g-Whitespace">     </span><span class="mi">31</span> <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">32</span>     <span class="n">__pydantic_self__</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">33</span>     <span class="n">_env_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DotenvType</span><span class="p">]</span> <span class="o">=</span> <span class="n">env_file_sentinel</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">38</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">39</span>     <span class="c1"># Uses something other than `self` the first arg to allow &quot;self&quot; as a settable attribute</span>
+<span class="ne">---&gt; </span><span class="mi">40</span>     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">41</span>         <span class="o">**</span><span class="n">__pydantic_self__</span><span class="o">.</span><span class="n">_build_values</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">42</span>             <span class="n">values</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">43</span>             <span class="n">_env_file</span><span class="o">=</span><span class="n">_env_file</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">44</span>             <span class="n">_env_file_encoding</span><span class="o">=</span><span class="n">_env_file_encoding</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">45</span>             <span class="n">_env_nested_delimiter</span><span class="o">=</span><span class="n">_env_nested_delimiter</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">46</span>             <span class="n">_secrets_dir</span><span class="o">=</span><span class="n">_secrets_dir</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">47</span>         <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">48</span>     <span class="p">)</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.20/x64/lib/python3.9/site-packages/pydantic/v1/main.py:341,</span> in <span class="ni">BaseModel.__init__</span><span class="nt">(__pydantic_self__, **data)</span>
+<span class="g g-Whitespace">    </span><span class="mi">339</span> <span class="n">values</span><span class="p">,</span> <span class="n">fields_set</span><span class="p">,</span> <span class="n">validation_error</span> <span class="o">=</span> <span class="n">validate_model</span><span class="p">(</span><span class="n">__pydantic_self__</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">340</span> <span class="k">if</span> <span class="n">validation_error</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">341</span>     <span class="k">raise</span> <span class="n">validation_error</span>
+<span class="g g-Whitespace">    </span><span class="mi">342</span> <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">343</span>     <span class="n">object_setattr</span><span class="p">(</span><span class="n">__pydantic_self__</span><span class="p">,</span> <span class="s1">&#39;__dict__&#39;</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+
+<span class="ne">ValidationError</span>: 1 validation error for Settings
+<span class="n">dark_mode</span>
+  <span class="n">extra</span> <span class="n">fields</span> <span class="ow">not</span> <span class="n">permitted</span> <span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">value_error</span><span class="o">.</span><span class="n">extra</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="n">corr</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">numeric_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># Create a heatmap with annotations for correlation values</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.2f&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">square</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">annot_kws</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Correlation Heatmap&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d554a5e8a3741df06a9d920d2029af25dbc7516518a243df9e3bcfb7c83bf38d.png" src="../_images/d554a5e8a3741df06a9d920d2029af25dbc7516518a243df9e3bcfb7c83bf38d.png" />
+</div>
+</div>
+<ul class="simple">
+<li><p>Country and State have a constant value, i.e. we are looking at the data of only California (US). So, we drop these two columns as they won’t be useful to derive any insights on Churn Rate.</p></li>
+<li><p>CustomerID will too not help. So, we drop this too.</p></li>
+<li><p>ChurnReason is highly correlated to ChurnLabel (same as ChurnValue) and it has  73.5% missing values. So, we drop it.</p></li>
+<li><p>ChurnLabel (target) has close to no correlation with Latitude, Longitude, ZipCode, CLTV so we drop these columns too.</p></li>
+<li><p>ChurnValue is the same as ChurnLabel so we drop the categorical former and keep the latter boolean column.</p></li>
+<li><p>ChurnScore has a high correlation with ChurnValue so drop this too.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">target</span> <span class="o">=</span> <span class="s1">&#39;ChurnLabel&#39;</span>
+
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;State&#39;</span><span class="p">,</span> <span class="s1">&#39;CustomerID&#39;</span><span class="p">,</span> <span class="s1">&#39;Latitude&#39;</span><span class="p">,</span><span class="s1">&#39;Longitude&#39;</span><span class="p">,</span><span class="s1">&#39;ChurnScore&#39;</span><span class="p">,</span> <span class="s1">&#39;CLTV&#39;</span><span class="p">,</span> <span class="s1">&#39;ChurnReason&#39;</span><span class="p">,</span> <span class="s1">&#39;ZipCode&#39;</span><span class="p">]:</span>
+  <span class="k">del</span> <span class="n">df1</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">df1</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>22
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
+<span class="n">df1</span><span class="p">[</span><span class="n">mask</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span> <span class="c1"># there are 11 rows with TotalCharges as NaN</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Gender</th>
+      <th>SeniorCitizen</th>
+      <th>Partner</th>
+      <th>Dependents</th>
+      <th>ChurnLabel</th>
+      <th>ChurnValue</th>
+      <th>City</th>
+      <th>TenureMonths</th>
+      <th>PhoneService</th>
+      <th>MultipleLines</th>
+      <th>...</th>
+      <th>OnlineBackup</th>
+      <th>DeviceProtection</th>
+      <th>TechSupport</th>
+      <th>StreamingTV</th>
+      <th>StreamingMovies</th>
+      <th>Contract</th>
+      <th>PaperlessBilling</th>
+      <th>PaymentMethod</th>
+      <th>MonthlyCharges</th>
+      <th>TotalCharges</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2234</th>
+      <td>Female</td>
+      <td>no</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No</td>
+      <td>0</td>
+      <td>San Bernardino</td>
+      <td>0</td>
+      <td>No</td>
+      <td>No phone service</td>
+      <td>...</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Two year</td>
+      <td>Yes</td>
+      <td>Bank transfer (automatic)</td>
+      <td>52.55</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2438</th>
+      <td>Male</td>
+      <td>no</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>0</td>
+      <td>Independence</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>...</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>Two year</td>
+      <td>No</td>
+      <td>Mailed check</td>
+      <td>20.25</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2568</th>
+      <td>Female</td>
+      <td>no</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No</td>
+      <td>0</td>
+      <td>San Mateo</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>...</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Two year</td>
+      <td>No</td>
+      <td>Mailed check</td>
+      <td>80.85</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2667</th>
+      <td>Male</td>
+      <td>no</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>0</td>
+      <td>Cupertino</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>...</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>Two year</td>
+      <td>No</td>
+      <td>Mailed check</td>
+      <td>25.75</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2856</th>
+      <td>Female</td>
+      <td>no</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No</td>
+      <td>0</td>
+      <td>Redcrest</td>
+      <td>0</td>
+      <td>No</td>
+      <td>No phone service</td>
+      <td>...</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Two year</td>
+      <td>No</td>
+      <td>Credit card (automatic)</td>
+      <td>56.05</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4331</th>
+      <td>Male</td>
+      <td>no</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>0</td>
+      <td>Los Angeles</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>...</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>Two year</td>
+      <td>No</td>
+      <td>Mailed check</td>
+      <td>19.85</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4687</th>
+      <td>Male</td>
+      <td>no</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>0</td>
+      <td>Sun City</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>...</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>Two year</td>
+      <td>No</td>
+      <td>Mailed check</td>
+      <td>25.35</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5104</th>
+      <td>Female</td>
+      <td>no</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>0</td>
+      <td>Ben Lomond</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>...</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>Two year</td>
+      <td>No</td>
+      <td>Mailed check</td>
+      <td>20.00</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5719</th>
+      <td>Male</td>
+      <td>no</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>0</td>
+      <td>La Verne</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>...</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>One year</td>
+      <td>Yes</td>
+      <td>Mailed check</td>
+      <td>19.70</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6772</th>
+      <td>Female</td>
+      <td>no</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>0</td>
+      <td>Bell</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>...</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Two year</td>
+      <td>No</td>
+      <td>Mailed check</td>
+      <td>73.35</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6840</th>
+      <td>Male</td>
+      <td>no</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>0</td>
+      <td>Wilmington</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>...</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Two year</td>
+      <td>Yes</td>
+      <td>Bank transfer (automatic)</td>
+      <td>61.90</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>11 rows × 22 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+
+<span class="c1"># since there are NaN values in total charges, let&#39;s impute it correctly</span>
+<span class="k">def</span> <span class="nf">imputeTotalCharges</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+  <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;TotalCharges&#39;</span><span class="p">])):</span>
+      <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;TotalCharges&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;MonthlyCharges&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;TenureMonths&#39;</span><span class="p">]</span>
+      <span class="c1"># row[&#39;TotalCharges&#39;] = row[&#39;MonthlyCharges&#39;] * row[&#39;TenureMonths&#39;]</span>
+  <span class="k">return</span> <span class="n">df</span>
+
+<span class="n">df1</span> <span class="o">=</span> <span class="n">imputeTotalCharges</span><span class="p">(</span><span class="n">df1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span><span class="p">[</span><span class="n">mask</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Gender</th>
+      <th>SeniorCitizen</th>
+      <th>Partner</th>
+      <th>Dependents</th>
+      <th>ChurnValue</th>
+      <th>City</th>
+      <th>TenureMonths</th>
+      <th>PhoneService</th>
+      <th>MultipleLines</th>
+      <th>InternetService</th>
+      <th>...</th>
+      <th>OnlineBackup</th>
+      <th>DeviceProtection</th>
+      <th>TechSupport</th>
+      <th>StreamingTV</th>
+      <th>StreamingMovies</th>
+      <th>Contract</th>
+      <th>PaperlessBilling</th>
+      <th>PaymentMethod</th>
+      <th>MonthlyCharges</th>
+      <th>TotalCharges</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2234</th>
+      <td>Female</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>0</td>
+      <td>San Bernardino</td>
+      <td>0</td>
+      <td>No</td>
+      <td>No phone service</td>
+      <td>DSL</td>
+      <td>...</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Two year</td>
+      <td>Yes</td>
+      <td>Bank transfer (automatic)</td>
+      <td>52.55</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2438</th>
+      <td>Male</td>
+      <td>0</td>
+      <td>No</td>
+      <td>No</td>
+      <td>0</td>
+      <td>Independence</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No</td>
+      <td>...</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>Two year</td>
+      <td>No</td>
+      <td>Mailed check</td>
+      <td>20.25</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2568</th>
+      <td>Female</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>0</td>
+      <td>San Mateo</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>DSL</td>
+      <td>...</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Two year</td>
+      <td>No</td>
+      <td>Mailed check</td>
+      <td>80.85</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2667</th>
+      <td>Male</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>0</td>
+      <td>Cupertino</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>...</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>Two year</td>
+      <td>No</td>
+      <td>Mailed check</td>
+      <td>25.75</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2856</th>
+      <td>Female</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>0</td>
+      <td>Redcrest</td>
+      <td>0</td>
+      <td>No</td>
+      <td>No phone service</td>
+      <td>DSL</td>
+      <td>...</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Two year</td>
+      <td>No</td>
+      <td>Credit card (automatic)</td>
+      <td>56.05</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4331</th>
+      <td>Male</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>0</td>
+      <td>Los Angeles</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No</td>
+      <td>...</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>Two year</td>
+      <td>No</td>
+      <td>Mailed check</td>
+      <td>19.85</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4687</th>
+      <td>Male</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>0</td>
+      <td>Sun City</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>...</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>Two year</td>
+      <td>No</td>
+      <td>Mailed check</td>
+      <td>25.35</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5104</th>
+      <td>Female</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>0</td>
+      <td>Ben Lomond</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No</td>
+      <td>...</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>Two year</td>
+      <td>No</td>
+      <td>Mailed check</td>
+      <td>20.00</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5719</th>
+      <td>Male</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>0</td>
+      <td>La Verne</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No</td>
+      <td>...</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>No internet service</td>
+      <td>One year</td>
+      <td>Yes</td>
+      <td>Mailed check</td>
+      <td>19.70</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>6772</th>
+      <td>Female</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>0</td>
+      <td>Bell</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>DSL</td>
+      <td>...</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Two year</td>
+      <td>No</td>
+      <td>Mailed check</td>
+      <td>73.35</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>6840</th>
+      <td>Male</td>
+      <td>0</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>0</td>
+      <td>Wilmington</td>
+      <td>0</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>DSL</td>
+      <td>...</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Two year</td>
+      <td>Yes</td>
+      <td>Bank transfer (automatic)</td>
+      <td>61.90</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>11 rows × 21 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span><span class="p">[</span><span class="s1">&#39;TotalCharges&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="c1"># now we have no missing values in our df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df2</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;ChurnLabel&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No     5174
+Yes    1869
+Name: ChurnLabel, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;PhoneService&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Yes    6361
+No      682
+Name: PhoneService, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>There is a high imbalance wrt to ChurnLabel and PhoneService, we may need to stratify it when using train_test_split</p></li>
+</ul>
+<section id="churn-distribution">
+<h2>Churn Distribution<a class="headerlink" href="#churn-distribution" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dfcl</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="s1">&#39;ChurnLabel&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;index&#39;</span><span class="p">:</span><span class="s1">&#39;Type&#39;</span><span class="p">})</span>
+<span class="n">dfcl</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Type</th>
+      <th>ChurnLabel</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>No</td>
+      <td>5174</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Yes</td>
+      <td>1869</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">dfcl</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s1">&#39;ChurnLabel&#39;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="s1">&#39;Type&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_traces</span><span class="p">(</span><span class="n">textfont_size</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">textposition</span><span class="o">=</span><span class="s1">&#39;inside&#39;</span><span class="p">,</span><span class="n">textinfo</span><span class="o">=</span><span class="s1">&#39;percent+label&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">title_text</span><span class="o">=</span><span class="s1">&#39;Churn Distribution&#39;</span><span class="p">,</span> <span class="n">title_x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="n">title_y</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">del</span> <span class="n">dfcl</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<ul class="simple">
+<li><p>26.5 % Of Customers Switched To Another Firm.</p></li>
+</ul>
+</section>
+<section id="payment-method-distribution">
+<h2>Payment Method Distribution<a class="headerlink" href="#payment-method-distribution" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dfp</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="s1">&#39;PaymentMethod&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;index&#39;</span><span class="p">:</span><span class="s1">&#39;Type&#39;</span><span class="p">})</span>
+<span class="n">dfp</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Type</th>
+      <th>PaymentMethod</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Electronic check</td>
+      <td>2365</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Mailed check</td>
+      <td>1612</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Bank transfer (automatic)</td>
+      <td>1544</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Credit card (automatic)</td>
+      <td>1522</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">dfp</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s1">&#39;PaymentMethod&#39;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="s1">&#39;Type&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Payment Method Distribution&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_traces</span><span class="p">(</span><span class="n">textposition</span><span class="o">=</span><span class="s1">&#39;inside&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">del</span> <span class="n">dfp</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">summary_df</span> <span class="o">=</span> <span class="n">report</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span>
+<span class="n">one_hot_cols</span> <span class="o">=</span> <span class="n">summary_df</span><span class="p">[</span><span class="n">summary_df</span><span class="o">.</span><span class="n">data_type</span><span class="o">==</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="s1">&#39;Column&#39;</span><span class="p">]</span>
+<span class="n">one_hot_cols</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0               Gender
+1        SeniorCitizen
+2              Partner
+3           Dependents
+4           ChurnLabel
+7         PhoneService
+8        MultipleLines
+9      InternetService
+10      OnlineSecurity
+11        OnlineBackup
+12    DeviceProtection
+13         TechSupport
+14         StreamingTV
+15     StreamingMovies
+16            Contract
+17    PaperlessBilling
+18       PaymentMethod
+Name: Column, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">summary_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Column</th>
+      <th>data_type</th>
+      <th>unique_values</th>
+      <th>n_unique_values</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Gender</td>
+      <td>object</td>
+      <td>[Male, Female]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>SeniorCitizen</td>
+      <td>object</td>
+      <td>[no, yes]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Partner</td>
+      <td>object</td>
+      <td>[No, Yes]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Dependents</td>
+      <td>object</td>
+      <td>[No, Yes]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ChurnLabel</td>
+      <td>object</td>
+      <td>[Yes, No]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>ChurnValue</td>
+      <td>int64</td>
+      <td>[1, 0]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>City</td>
+      <td>object</td>
+      <td>[Los Angeles, Beverly Hills, Huntington Park, ...</td>
+      <td>1129</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>TenureMonths</td>
+      <td>int64</td>
+      <td>[2, 8, 28, 49, 10]</td>
+      <td>73</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>PhoneService</td>
+      <td>object</td>
+      <td>[Yes, No]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>MultipleLines</td>
+      <td>object</td>
+      <td>[No, Yes, No phone service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>InternetService</td>
+      <td>object</td>
+      <td>[DSL, Fiber optic, No]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>OnlineSecurity</td>
+      <td>object</td>
+      <td>[Yes, No, No internet service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>OnlineBackup</td>
+      <td>object</td>
+      <td>[Yes, No, No internet service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>DeviceProtection</td>
+      <td>object</td>
+      <td>[No, Yes, No internet service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>TechSupport</td>
+      <td>object</td>
+      <td>[No, Yes, No internet service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>StreamingTV</td>
+      <td>object</td>
+      <td>[No, Yes, No internet service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>StreamingMovies</td>
+      <td>object</td>
+      <td>[No, Yes, No internet service]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Contract</td>
+      <td>object</td>
+      <td>[Month-to-month, Two year, One year]</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>PaperlessBilling</td>
+      <td>object</td>
+      <td>[Yes, No]</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>PaymentMethod</td>
+      <td>object</td>
+      <td>[Mailed check, Electronic check, Bank transfer...</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>MonthlyCharges</td>
+      <td>float64</td>
+      <td>[53.85, 70.7, 99.65, 104.8, 103.7]</td>
+      <td>1585</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>TotalCharges</td>
+      <td>float64</td>
+      <td>[108.15, 151.65, 820.5, 3046.05, 5036.3]</td>
+      <td>6531</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="categorical-features-against-target">
+<h2>Categorical features against Target<a class="headerlink" href="#categorical-features-against-target" title="Link to this heading">#</a></h2>
+<section id="working-out-the-bar-chart-function">
+<h3>Working out the bar chart function<a class="headerlink" href="#working-out-the-bar-chart-function" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tdf</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;PaymentMethod&#39;</span><span class="p">,</span> <span class="s1">&#39;ChurnLabel&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="s1">&#39;Type&#39;</span><span class="p">})</span>
+<span class="n">tdf</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PaymentMethod</th>
+      <th>ChurnLabel</th>
+      <th>Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Bank transfer (automatic)</td>
+      <td>No</td>
+      <td>1286</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Bank transfer (automatic)</td>
+      <td>Yes</td>
+      <td>258</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Credit card (automatic)</td>
+      <td>No</td>
+      <td>1290</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Credit card (automatic)</td>
+      <td>Yes</td>
+      <td>232</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Electronic check</td>
+      <td>No</td>
+      <td>1294</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Electronic check</td>
+      <td>Yes</td>
+      <td>1071</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Mailed check</td>
+      <td>No</td>
+      <td>1304</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Mailed check</td>
+      <td>Yes</td>
+      <td>308</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vcdf</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="s1">&#39;PaymentMethod&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;index&#39;</span><span class="p">:</span><span class="s1">&#39;Type&#39;</span><span class="p">})</span>
+<span class="n">vcdf</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Type</th>
+      <th>PaymentMethod</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Electronic check</td>
+      <td>2365</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Mailed check</td>
+      <td>1612</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Bank transfer (automatic)</td>
+      <td>1544</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Credit card (automatic)</td>
+      <td>1522</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Type&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">df</span> <span class="ow">in</span> <span class="n">vcdf</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Electronic check&#39;,
+ &#39;Mailed check&#39;,
+ &#39;Bank transfer (automatic)&#39;,
+ &#39;Credit card (automatic)&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># [df[&#39;Payment Method&#39;] for idx,df in vcdf.iterrows()]</span>
+<span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">df</span> <span class="ow">in</span> <span class="n">vcdf</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2365, 1612, 1544, 1522]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">del</span> <span class="n">tdf</span><span class="p">,</span><span class="n">vcdf</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="defining-bar-chart-function">
+<h3>Defining bar chart function<a class="headerlink" href="#defining-bar-chart-function" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Defining string formatting for graph annotation</span>
+<span class="c1"># Numeric section :  a comma and space are appended after all but the last two numbers in the list, space and &amp; are appended after second to last num</span>
+<span class="k">def</span> <span class="nf">num_format</span><span class="p">(</span><span class="n">list_instance</span><span class="p">):</span>
+    <span class="n">formatted_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span><span class="n">num</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">list_instance</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_instance</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="p">:</span> <span class="n">formatted_str</span><span class="o">=</span><span class="n">formatted_str</span><span class="o">+</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s1">%, &#39;</span>
+        <span class="k">elif</span> <span class="n">index</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_instance</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="p">:</span> <span class="n">formatted_str</span><span class="o">=</span><span class="n">formatted_str</span><span class="o">+</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s1">% &amp; &#39;</span>
+        <span class="k">else</span><span class="p">:</span> <span class="n">formatted_str</span><span class="o">=</span><span class="n">formatted_str</span><span class="o">+</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s1">%&#39;</span>
+    <span class="k">return</span> <span class="n">formatted_str</span>
+
+<span class="c1"># Categorical section</span>
+<span class="k">def</span> <span class="nf">str_format</span><span class="p">(</span><span class="n">list_instance</span><span class="p">):</span>
+    <span class="n">formatted_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">cat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">list_instance</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_instance</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="p">:</span> <span class="n">formatted_str</span><span class="o">=</span><span class="n">formatted_str</span><span class="o">+</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cat</span><span class="si">}</span><span class="s1">, &#39;</span>
+        <span class="k">elif</span> <span class="n">index</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_instance</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="p">:</span> <span class="n">formatted_str</span><span class="o">=</span><span class="n">formatted_str</span><span class="o">+</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cat</span><span class="si">}</span><span class="s1"> &amp; &#39;</span>
+        <span class="k">else</span><span class="p">:</span> <span class="n">formatted_str</span><span class="o">=</span><span class="n">formatted_str</span><span class="o">+</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cat</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="k">return</span> <span class="n">formatted_str</span>
+
+<span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="n">cat_feature</span><span class="p">,</span><span class="n">df</span><span class="o">=</span><span class="n">df2</span><span class="p">):</span>
+
+    <span class="c1"># Groupby the categorical feature</span>
+    <span class="n">temp_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">cat_feature</span><span class="p">,</span> <span class="s1">&#39;ChurnValue&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="s1">&#39;Count&#39;</span><span class="p">})</span>
+
+    <span class="c1"># Calculate the value counts of each distribution and it&#39;s corresponding Percentages</span>
+    <span class="n">cat_value_counts_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">cat_feature</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;index&#39;</span><span class="p">:</span><span class="s1">&#39;Type&#39;</span><span class="p">})</span>
+    <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Type&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">df</span> <span class="ow">in</span> <span class="n">cat_value_counts_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()]</span>
+
+    <span class="c1"># Calculate the value counts of each distribution and it&#39;s corresponding Percentages</span>
+    <span class="n">type_num_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">df</span> <span class="ow">in</span> <span class="n">cat_value_counts_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()]</span>
+    <span class="n">div_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">element</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">type_num_list</span><span class="p">)</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">type_num_list</span><span class="p">]</span>
+    <span class="n">type_percentage</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">element</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">div_list</span><span class="p">]</span>
+
+    <span class="c1"># Running the formatting functions</span>
+    <span class="n">num_str</span> <span class="o">=</span> <span class="n">num_format</span><span class="p">(</span><span class="n">type_percentage</span><span class="p">)</span>
+    <span class="n">cat_str</span> <span class="o">=</span> <span class="n">str_format</span><span class="p">(</span><span class="n">categories</span><span class="p">)</span>
+
+    <span class="c1"># Setting graph framework</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">temp_df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">cat_feature</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Count&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;ChurnValue&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Churn rate by </span><span class="si">{</span><span class="n">cat_feature</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">barmode</span><span class="o">=</span><span class="s2">&quot;group&quot;</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">add_annotation</span><span class="p">(</span>
+                <span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Value count of distribution of </span><span class="si">{</span><span class="n">cat_str</span><span class="si">}</span><span class="s1"> are </span><span class="si">{</span><span class="n">num_str</span><span class="si">}</span><span class="s1"> percentage respectively.&#39;</span><span class="p">,</span>
+                <span class="n">showarrow</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">xref</span><span class="o">=</span><span class="s1">&#39;paper&#39;</span><span class="p">,</span> <span class="n">yref</span><span class="o">=</span><span class="s1">&#39;paper&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+        <span class="c1"># margin space for the annotations on the right</span>
+        <span class="n">margin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mi">400</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># bar(&#39;Device Protection&#39;)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="bar-plots-cat-vs-target">
+<h3>Bar Plots (Cat Vs. Target)<a class="headerlink" href="#bar-plots-cat-vs-target" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">cat_col</span> <span class="ow">in</span> <span class="n">one_hot_cols</span><span class="p">:</span>
+  <span class="n">bar</span><span class="p">(</span><span class="n">cat_col</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Summary:</p>
+<ul class="simple">
+<li><p>No city had a high churn rate (we might as well drop this City column).</p></li>
+<li><p>Both Genders Behaved In Similar Fashion When It Came To Migrating To Another Service Provider/Firm.</p></li>
+<li><p>Most Of The Senior Citizens Churn.</p></li>
+<li><p>About 75% Of Customer With Month-To-Month Contract Opted To Move Out As Compared To 13% Of Customers With One Year Contract And 3% With Two Year Contract.</p></li>
+<li><p>Major Customers Who Moved Out Had An Electronic Check As Payment Method On File. Customers Who Opted For Credit-Card Automatic Transfer or Bank Automatic Transfer or Mailed Check As Payment Method Were Less Likely To Move Out.</p></li>
+<li><p>Customers With Paperless Billing Are Most Likely To Churn.</p></li>
+<li><p>Customers with no internet services were less likely to churn.</p></li>
+<li><p>Streaming Movies or TV made no difference in the Churn rate. They would churn irrespective of this status.</p></li>
+<li><p>Customers which were offered no tech support or did not consult the tech support were highly likely to churn.</p></li>
+<li><p>66% of the Customers with no online backup switched whereas only 27% of those who did had a backup.</p></li>
+<li><p>Most of those had no online security.</p></li>
+<li><p>Those customers that had fibre optic internet services were more likely to churn.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df2</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;City&#39;</span><span class="p">],</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="numerical-features-against-target">
+<h2>Numerical features against Target<a class="headerlink" href="#numerical-features-against-target" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_cols</span> <span class="o">=</span> <span class="n">summary_df</span><span class="p">[(</span><span class="n">summary_df</span><span class="o">.</span><span class="n">data_type</span><span class="o">==</span><span class="s1">&#39;int64&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">summary_df</span><span class="o">.</span><span class="n">data_type</span><span class="o">==</span><span class="s1">&#39;float64&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">Column</span>
+<span class="n">num_cols</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5         ChurnValue
+6       TenureMonths
+19    MonthlyCharges
+20      TotalCharges
+Name: Column, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">num_cols</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+  <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">,</span><span class="n">font_scale</span><span class="o">=</span><span class="mf">1.1</span><span class="p">)</span>
+
+  <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">col</span><span class="p">][(</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;ChurnValue&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;steelblue&quot;</span><span class="p">,</span> <span class="n">fill</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+  <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">col</span><span class="p">][(</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;ChurnValue&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">],</span> <span class="n">ax</span> <span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+  <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;Not Churn&quot;</span><span class="p">,</span><span class="s2">&quot;Churn&quot;</span><span class="p">],</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Density&#39;</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribution of </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1"> by churn&#39;</span><span class="p">)</span>
+
+  <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+  <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/15592ecdd25c8d6e5d73d4a1cc1d6063496f9460dc0b99e0b89514fb700366e4.png" src="../_images/15592ecdd25c8d6e5d73d4a1cc1d6063496f9460dc0b99e0b89514fb700366e4.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<img alt="../_images/9ffa016ce61277a74dc13d93ca2ad1e02eb76a092edcda7c26eb78c9b7d4b73a.png" src="../_images/9ffa016ce61277a74dc13d93ca2ad1e02eb76a092edcda7c26eb78c9b7d4b73a.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<img alt="../_images/042990f9ffa6b923ed97ae36d7533348cebff12155a3712ae4dc3278fd6dd0c5.png" src="../_images/042990f9ffa6b923ed97ae36d7533348cebff12155a3712ae4dc3278fd6dd0c5.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>Since the TotalCharges data is right skewed, we would want to apply log transformation to it.</p></li>
+</ul>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="preprocessing-pipeline">
+<h1>PREPROCESSING PIPELINE:<a class="headerlink" href="#preprocessing-pipeline" title="Link to this heading">#</a></h1>
+<ol class="arabic simple">
+<li><p>Drop the columns: ‘Country’, ‘State’, ‘CustomerID’, ‘Latitude’,’Longitude’,’ChurnScore’, ‘CLTV’, ‘ChurnReason’, ‘ZipCode’, ‘City’</p></li>
+<li><p>Impute missing values from TotalCharges.</p></li>
+<li><p>Apply log transformation to TotalCharges.</p></li>
+<li><p>Standardize all numerical features (TenureMonths, MonthlyCharges, and transformed TotalCharges).</p></li>
+<li><p>One Hot Encode all the categorical columns.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span><span class="p">,</span> <span class="n">OneHotEncoder</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">class</span> <span class="nc">CustomPreprocessor</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">columns_to_drop</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;State&#39;</span><span class="p">,</span> <span class="s1">&#39;CustomerID&#39;</span><span class="p">,</span> <span class="s1">&#39;Latitude&#39;</span><span class="p">,</span>
+                               <span class="s1">&#39;Longitude&#39;</span><span class="p">,</span> <span class="s1">&#39;ChurnScore&#39;</span><span class="p">,</span> <span class="s1">&#39;CLTV&#39;</span><span class="p">,</span> 
+                               <span class="s1">&#39;ChurnReason&#39;</span><span class="p">,</span> <span class="s1">&#39;ZipCode&#39;</span><span class="p">,</span> <span class="s1">&#39;City&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numeric_features</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TenureMonths&#39;</span><span class="p">,</span> <span class="s1">&#39;MonthlyCharges&#39;</span><span class="p">,</span> <span class="s1">&#39;TotalCharges&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">categorical_features</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Will be set during fit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">sparse_output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">handle_unknown</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoded_feature_names</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_impute_total_charges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="n">X_</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">X_</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;TotalCharges&#39;</span><span class="p">]):</span>
+                <span class="n">X_</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;TotalCharges&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">X_</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;MonthlyCharges&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">X_</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;TenureMonths&#39;</span><span class="p">]</span>
+                <span class="p">)</span>
+        <span class="k">return</span> <span class="n">X_</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Set categorical features (excluding target)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">categorical_features</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">columns</span> 
+                                   <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns_to_drop</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;ChurnLabel&#39;</span><span class="p">]]</span>
+        
+        <span class="n">X_</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">X_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_impute_total_charges</span><span class="p">(</span><span class="n">X_</span><span class="p">)</span>
+        <span class="n">X_</span> <span class="o">=</span> <span class="n">X_</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">columns_to_drop</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+        <span class="n">X_</span><span class="p">[</span><span class="s1">&#39;TotalCharges&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">X_</span><span class="p">[</span><span class="s1">&#39;TotalCharges&#39;</span><span class="p">])</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">scaler</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">numeric_features</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">categorical_features</span><span class="p">])</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoded_feature_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">feature</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">categorical_features</span><span class="p">):</span>
+            <span class="n">feature_categories</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">categories_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">encoded_feature_names</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">feature</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">cat</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="n">feature_categories</span><span class="p">])</span>
+        
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="n">X_</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">X_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_impute_total_charges</span><span class="p">(</span><span class="n">X_</span><span class="p">)</span>
+        <span class="n">X_</span> <span class="o">=</span> <span class="n">X_</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">columns_to_drop</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+        <span class="n">X_</span><span class="p">[</span><span class="s1">&#39;TotalCharges&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">X_</span><span class="p">[</span><span class="s1">&#39;TotalCharges&#39;</span><span class="p">])</span>
+        
+        <span class="n">X_scaled</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">numeric_features</span><span class="p">]),</span>
+            <span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">numeric_features</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="n">X_</span><span class="o">.</span><span class="n">index</span>
+        <span class="p">)</span>
+        
+        <span class="n">X_encoded</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">categorical_features</span><span class="p">]),</span>
+            <span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">encoded_feature_names</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="n">X_</span><span class="o">.</span><span class="n">index</span>
+        <span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">X_scaled</span><span class="p">,</span> <span class="n">X_encoded</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./book"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="1.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Get data into a normalized form (3NF)</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">EDA - Exploratory Data Anlaysis</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#churn-distribution">Churn Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#payment-method-distribution">Payment Method Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-features-against-target">Categorical features against Target</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#working-out-the-bar-chart-function">Working out the bar chart function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-bar-chart-function">Defining bar chart function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bar-plots-cat-vs-target">Bar Plots (Cat Vs. Target)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numerical-features-against-target">Numerical features against Target</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocessing-pipeline">PREPROCESSING PIPELINE:</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rutuja Bhure
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

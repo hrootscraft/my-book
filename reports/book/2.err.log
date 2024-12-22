@@ -1,0 +1,84 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.9.20/x64/lib/python3.9/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/opt/hostedtoolcache/Python/3.9.20/x64/lib/python3.9/site-packages/nbclient/client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/opt/hostedtoolcache/Python/3.9.20/x64/lib/python3.9/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+  File "/opt/hostedtoolcache/Python/3.9.20/x64/lib/python3.9/asyncio/base_events.py", line 647, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.9.20/x64/lib/python3.9/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/opt/hostedtoolcache/Python/3.9.20/x64/lib/python3.9/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.9.20/x64/lib/python3.9/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+from ydata_profiling import ProfileReport
+profile = ProfileReport(df, title="My Data Profiling Report", explorative=True, minimal=False, dark_mode=True)
+
+# to view the report in a Jupyter notebook
+profile.to_notebook_iframe()
+------------------
+
+----- stderr -----
+/opt/hostedtoolcache/Python/3.9.20/x64/lib/python3.9/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mValidationError[0m                           Traceback (most recent call last)
+Cell [0;32mIn[6], line 2[0m
+[1;32m      1[0m [38;5;28;01mfrom[39;00m [38;5;21;01mydata_profiling[39;00m [38;5;28;01mimport[39;00m ProfileReport
+[0;32m----> 2[0m profile [38;5;241m=[39m [43mProfileReport[49m[43m([49m[43mdf[49m[43m,[49m[43m [49m[43mtitle[49m[38;5;241;43m=[39;49m[38;5;124;43m"[39;49m[38;5;124;43mMy Data Profiling Report[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mexplorative[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m[43m [49m[43mminimal[49m[38;5;241;43m=[39;49m[38;5;28;43;01mFalse[39;49;00m[43m,[49m[43m [49m[43mdark_mode[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m)[49m
+[1;32m      4[0m [38;5;66;03m# to view the report in a Jupyter notebook[39;00m
+[1;32m      5[0m profile[38;5;241m.[39mto_notebook_iframe()
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.20/x64/lib/python3.9/site-packages/ydata_profiling/profile_report.py:142[0m, in [0;36mProfileReport.__init__[0;34m(self, df, minimal, tsmode, sortby, sensitive, explorative, sample, config_file, lazy, typeset, summarizer, config, type_schema, **kwargs)[0m
+[1;32m    137[0m     report_config [38;5;241m=[39m report_config[38;5;241m.[39mupdate(
+[1;32m    138[0m         Settings()[38;5;241m.[39mupdate(shorthands)[38;5;241m.[39mdict(exclude_defaults[38;5;241m=[39m[38;5;28;01mTrue[39;00m)
+[1;32m    139[0m     )
+[1;32m    141[0m [38;5;28;01mif[39;00m kwargs:
+[0;32m--> 142[0m     report_config [38;5;241m=[39m report_config[38;5;241m.[39mupdate(kwargs)
+[1;32m    144[0m report_config[38;5;241m.[39mvars[38;5;241m.[39mtimeseries[38;5;241m.[39mactive [38;5;241m=[39m tsmode
+[1;32m    145[0m [38;5;28;01mif[39;00m tsmode [38;5;129;01mand[39;00m sortby:
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.20/x64/lib/python3.9/site-packages/ydata_profiling/config.py:358[0m, in [0;36mSettings.update[0;34m(self, updates)[0m
+[1;32m    356[0m [38;5;28;01mdef[39;00m [38;5;21mupdate[39m([38;5;28mself[39m, updates: [38;5;28mdict[39m) [38;5;241m-[39m[38;5;241m>[39m [38;5;124m"[39m[38;5;124mSettings[39m[38;5;124m"[39m:
+[1;32m    357[0m     update [38;5;241m=[39m _merge_dictionaries([38;5;28mself[39m[38;5;241m.[39mdict(), updates)
+[0;32m--> 358[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mparse_obj[49m[43m([49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mcopy[49m[43m([49m[43mupdate[49m[38;5;241;43m=[39;49m[43mupdate[49m[43m)[49m[43m)[49m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.20/x64/lib/python3.9/site-packages/pydantic/v1/main.py:526[0m, in [0;36mBaseModel.parse_obj[0;34m(cls, obj)[0m
+[1;32m    524[0m         exc [38;5;241m=[39m [38;5;167;01mTypeError[39;00m([38;5;124mf[39m[38;5;124m'[39m[38;5;132;01m{[39;00m[38;5;28mcls[39m[38;5;241m.[39m[38;5;18m__name__[39m[38;5;132;01m}[39;00m[38;5;124m expected dict not [39m[38;5;132;01m{[39;00mobj[38;5;241m.[39m[38;5;18m__class__[39m[38;5;241m.[39m[38;5;18m__name__[39m[38;5;132;01m}[39;00m[38;5;124m'[39m)
+[1;32m    525[0m         [38;5;28;01mraise[39;00m ValidationError([ErrorWrapper(exc, loc[38;5;241m=[39mROOT_KEY)], [38;5;28mcls[39m) [38;5;28;01mfrom[39;00m [38;5;21;01me[39;00m
+[0;32m--> 526[0m [38;5;28;01mreturn[39;00m [38;5;28;43mcls[39;49m[43m([49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mobj[49m[43m)[49m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.20/x64/lib/python3.9/site-packages/pydantic/v1/env_settings.py:40[0m, in [0;36mBaseSettings.__init__[0;34m(__pydantic_self__, _env_file, _env_file_encoding, _env_nested_delimiter, _secrets_dir, **values)[0m
+[1;32m     31[0m [38;5;28;01mdef[39;00m [38;5;21m__init__[39m(
+[1;32m     32[0m     __pydantic_self__,
+[1;32m     33[0m     _env_file: Optional[DotenvType] [38;5;241m=[39m env_file_sentinel,
+[0;32m   (...)[0m
+[1;32m     38[0m ) [38;5;241m-[39m[38;5;241m>[39m [38;5;28;01mNone[39;00m:
+[1;32m     39[0m     [38;5;66;03m# Uses something other than `self` the first arg to allow "self" as a settable attribute[39;00m
+[0;32m---> 40[0m     [38;5;28;43msuper[39;49m[43m([49m[43m)[49m[38;5;241;43m.[39;49m[38;5;21;43m__init__[39;49m[43m([49m
+[1;32m     41[0m [43m        [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43m__pydantic_self__[49m[38;5;241;43m.[39;49m[43m_build_values[49m[43m([49m
+[1;32m     42[0m [43m            [49m[43mvalues[49m[43m,[49m
+[1;32m     43[0m [43m            [49m[43m_env_file[49m[38;5;241;43m=[39;49m[43m_env_file[49m[43m,[49m
+[1;32m     44[0m [43m            [49m[43m_env_file_encoding[49m[38;5;241;43m=[39;49m[43m_env_file_encoding[49m[43m,[49m
+[1;32m     45[0m [43m            [49m[43m_env_nested_delimiter[49m[38;5;241;43m=[39;49m[43m_env_nested_delimiter[49m[43m,[49m
+[1;32m     46[0m [43m            [49m[43m_secrets_dir[49m[38;5;241;43m=[39;49m[43m_secrets_dir[49m[43m,[49m
+[1;32m     47[0m [43m        [49m[43m)[49m
+[1;32m     48[0m [43m    [49m[43m)[49m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.20/x64/lib/python3.9/site-packages/pydantic/v1/main.py:341[0m, in [0;36mBaseModel.__init__[0;34m(__pydantic_self__, **data)[0m
+[1;32m    339[0m values, fields_set, validation_error [38;5;241m=[39m validate_model(__pydantic_self__[38;5;241m.[39m[38;5;18m__class__[39m, data)
+[1;32m    340[0m [38;5;28;01mif[39;00m validation_error:
+[0;32m--> 341[0m     [38;5;28;01mraise[39;00m validation_error
+[1;32m    342[0m [38;5;28;01mtry[39;00m:
+[1;32m    343[0m     object_setattr(__pydantic_self__, [38;5;124m'[39m[38;5;124m__dict__[39m[38;5;124m'[39m, values)
+
+[0;31mValidationError[0m: 1 validation error for Settings
+dark_mode
+  extra fields not permitted (type=value_error.extra)
+
