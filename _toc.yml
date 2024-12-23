@@ -12,6 +12,8 @@ chapters:
     title: EDA and Preprocessing    
   - file: book/3
     title: Model Training
+  - file: book/4
+    title: Streamlit Code
 
 # Or you organize the TOC by parts
 
