@@ -4,6 +4,6 @@
 - My Resume/CV [Link](https://docs.google.com/document/d/1M4rx7_kydtPH-QllRdxTHSDfQHRhIao72wP-wjgEffY/edit?usp=sharing)
 - Following is a video explaining the project:
 
-<iframe width="560" height="315" src="https://youtu.be/EAsuVyOHl00?si=fv8se7L3QvojHMOs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://youtu.be/EAsuVyOHl00?si=zY0im2zJo-Pin6JY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 - Streamlit App [Link](https://my-book-fin.streamlit.app/)
