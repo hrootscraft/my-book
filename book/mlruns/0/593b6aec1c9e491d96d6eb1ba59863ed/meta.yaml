@@ -1,0 +1,15 @@
+artifact_uri: file:///home/rutuja/fin_prj/my-book/book/mlruns/0/593b6aec1c9e491d96d6eb1ba59863ed/artifacts
+end_time: 1734913877648
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 593b6aec1c9e491d96d6eb1ba59863ed
+run_name: pca_analysis
+run_uuid: 593b6aec1c9e491d96d6eb1ba59863ed
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734913877419
+status: 3
+tags: []
+user_id: rutuja
