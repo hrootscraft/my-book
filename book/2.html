@@ -65,7 +65,7 @@
     <link rel="icon" href="../_static/fav.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="3.html" />
+    <link rel="next" title="COMPARE F1 SCORES" href="3.html" />
     <link rel="prev" title="Get data into a normalized form (3NF)" href="1.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -166,6 +166,13 @@
 <li class="toctree-l1"><a class="reference internal" href="markdown.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="1.html">Normalize Database</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">EDA - Exploratory Data Anlaysis</a></li>
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="3.html">COMPARE F1 SCORES</a></li>
+
 
 </ul>
 
@@ -438,6 +445,13 @@
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocessing-pipeline">PREPROCESSING PIPELINE:</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-analysis">PCA ANALYSIS</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection">FEATURE SELECTION</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-using-random-forest">FEATURE SELECTION USING RANDOM FOREST</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-with-correlation-threshold">FEATURE SELECTION WITH CORRELATION THRESHOLD</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-with-variance-threshold">FEATURE SELECTION WITH VARIANCE THRESHOLD</a></li>
 </ul>
 
             </nav>
@@ -2722,6 +2736,494 @@ Name: Column, dtype: object
 </div>
 </div>
 </section>
+<section class="tex2jax_ignore mathjax_ignore" id="pca-analysis">
+<h1>PCA ANALYSIS<a class="headerlink" href="#pca-analysis" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">mlflow</span>
+
+<span class="k">def</span> <span class="nf">perform_pca_analysis</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mlflow_logging</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Performs PCA analysis, creates scree plot, and logs results to MLflow</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Initialize PCA</span>
+    <span class="k">if</span> <span class="n">n_components</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">n_components</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    
+    <span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">)</span>
+    
+    <span class="c1"># Fit and transform training data</span>
+    <span class="n">X_train_pca</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+    
+    <span class="c1"># Transform test data</span>
+    <span class="n">X_test_pca</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    
+    <span class="c1"># Calculate explained variance ratio cumulative sum</span>
+    <span class="n">cumsum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span>
+    
+    <span class="c1"># Create scree plot</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    
+    <span class="c1"># Plot individual explained variance ratios</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> 
+            <span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Principal Component&#39;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Explained Variance Ratio (%)&#39;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Scree Plot&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Plot cumulative explained variance ratio</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">cumsum</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">cumsum</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">95</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;90% threshold&#39;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Number of Components&#39;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Cumulative Explained Variance Ratio (%)&#39;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Cumulative Explained Variance&#39;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        
+    <span class="k">return</span> <span class="n">pca</span><span class="p">,</span> <span class="n">X_train_pca</span><span class="p">,</span> <span class="n">X_test_pca</span><span class="p">,</span> <span class="n">fig</span>
+
+<span class="k">def</span> <span class="nf">get_optimal_components</span><span class="p">(</span><span class="n">pca_results</span><span class="p">,</span> <span class="n">variance_threshold</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the number of components needed to explain variance_threshold of the variance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cumsum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">pca_results</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span>
+    <span class="n">n_components</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">cumsum</span> <span class="o">&gt;=</span> <span class="n">variance_threshold</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">n_components</span>
+
+<span class="k">def</span> <span class="nf">run_pca_workflow</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Runs the complete PCA workflow with MLflow logging</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">start_run</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="s2">&quot;pca_analysis&quot;</span><span class="p">):</span>
+        <span class="c1"># Perform initial PCA analysis</span>
+        <span class="n">pca</span><span class="p">,</span> <span class="n">X_train_pca</span><span class="p">,</span> <span class="n">X_test_pca</span><span class="p">,</span> <span class="n">fig</span> <span class="o">=</span> <span class="n">perform_pca_analysis</span><span class="p">(</span>
+            <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">mlflow_logging</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        
+        <span class="c1"># Get optimal number of components for 95% variance</span>
+        <span class="n">n_optimal</span> <span class="o">=</span> <span class="n">get_optimal_components</span><span class="p">(</span><span class="n">pca</span><span class="p">,</span> <span class="n">variance_threshold</span><span class="o">=</span><span class="mf">0.90</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of components needed for 90% variance: </span><span class="si">{</span><span class="n">n_optimal</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># If you want to use the optimal number of components</span>
+        <span class="k">if</span> <span class="n">n_optimal</span> <span class="o">&lt;</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">pca_optimal</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_optimal</span><span class="p">)</span>
+            <span class="n">X_train_pca_optimal</span> <span class="o">=</span> <span class="n">pca_optimal</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+            <span class="n">X_test_pca_optimal</span> <span class="o">=</span> <span class="n">pca_optimal</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+            
+            <span class="c1"># Convert to DataFrame with component names</span>
+            <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;PC</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_optimal</span><span class="p">)]</span>
+            <span class="n">X_train_pca_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X_train_pca_optimal</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">X_train</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+            <span class="n">X_test_pca_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X_test_pca_optimal</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">X_test</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+            
+            <span class="c1"># Log feature importance</span>
+            <span class="n">feature_importance</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="n">pca_optimal</span><span class="o">.</span><span class="n">components_</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span>
+                <span class="n">index</span><span class="o">=</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span>
+            <span class="p">)</span>
+            
+            <span class="n">mlflow</span><span class="o">.</span><span class="n">log_params</span><span class="p">({</span>
+                <span class="s2">&quot;n_components_selected&quot;</span><span class="p">:</span> <span class="n">n_optimal</span><span class="p">,</span>
+                <span class="s2">&quot;variance_explained_selected&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pca_optimal</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span>
+            <span class="p">})</span>
+            
+            <span class="k">return</span> <span class="n">X_train_pca_df</span><span class="p">,</span> <span class="n">X_test_pca_df</span><span class="p">,</span> <span class="n">feature_importance</span>
+        
+        <span class="k">return</span> <span class="n">X_train_pca</span><span class="p">,</span> <span class="n">X_test_pca</span><span class="p">,</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;ChurnLabel&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;ChurnLabel&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelEncoder</span>
+
+<span class="n">le</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
+
+<span class="c1"># Encode target variable (&#39;No&#39; -&gt; 0, &#39;Yes&#39; -&gt; 1)</span>
+<span class="n">y_encoded</span> <span class="o">=</span> <span class="n">le</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y_encoded</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">mlflow</span>
+
+<span class="k">def</span> <span class="nf">perform_pca_analysis</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mlflow_logging</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Performs PCA analysis, creates scree plot, and logs results to MLflow</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Initialize PCA</span>
+    <span class="k">if</span> <span class="n">n_components</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">n_components</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    
+    <span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">)</span>
+    
+    <span class="c1"># Fit and transform training data</span>
+    <span class="n">X_train_pca</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+    
+    <span class="c1"># Transform test data</span>
+    <span class="n">X_test_pca</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    
+    <span class="c1"># Calculate explained variance ratio cumulative sum</span>
+    <span class="n">cumsum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span>
+    
+    <span class="c1"># Create scree plot</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    
+    <span class="c1"># Plot individual explained variance ratios</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> 
+            <span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Principal Component&#39;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Explained Variance Ratio (%)&#39;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Scree Plot&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Plot cumulative explained variance ratio</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">cumsum</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">cumsum</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;90% threshold&#39;</span><span class="p">)</span>  <span class="c1"># Updated to 90% threshold</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Number of Components&#39;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Cumulative Explained Variance Ratio (%)&#39;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Cumulative Explained Variance&#39;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        
+    <span class="k">return</span> <span class="n">pca</span><span class="p">,</span> <span class="n">X_train_pca</span><span class="p">,</span> <span class="n">X_test_pca</span><span class="p">,</span> <span class="n">fig</span>
+
+<span class="k">def</span> <span class="nf">get_optimal_components</span><span class="p">(</span><span class="n">pca_results</span><span class="p">,</span> <span class="n">variance_threshold</span><span class="o">=</span><span class="mf">0.90</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the number of components needed to explain variance_threshold of the variance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cumsum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">pca_results</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span>
+    <span class="n">n_components</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">cumsum</span> <span class="o">&gt;=</span> <span class="n">variance_threshold</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># +1 to include the component that meets the threshold</span>
+    <span class="k">return</span> <span class="n">n_components</span>
+
+<span class="k">def</span> <span class="nf">run_pca_workflow</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Runs the complete PCA workflow with MLflow logging</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">start_run</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="s2">&quot;pca_analysis&quot;</span><span class="p">):</span>
+        <span class="c1"># Perform initial PCA analysis</span>
+        <span class="n">pca</span><span class="p">,</span> <span class="n">X_train_pca</span><span class="p">,</span> <span class="n">X_test_pca</span><span class="p">,</span> <span class="n">fig</span> <span class="o">=</span> <span class="n">perform_pca_analysis</span><span class="p">(</span>
+            <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">mlflow_logging</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        
+        <span class="c1"># Get optimal number of components for 90% variance</span>
+        <span class="n">n_optimal</span> <span class="o">=</span> <span class="n">get_optimal_components</span><span class="p">(</span><span class="n">pca</span><span class="p">,</span> <span class="n">variance_threshold</span><span class="o">=</span><span class="mf">0.90</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of components needed for 90% variance: </span><span class="si">{</span><span class="n">n_optimal</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># If you want to use the optimal number of components</span>
+        <span class="k">if</span> <span class="n">n_optimal</span> <span class="o">&lt;</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">pca_optimal</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_optimal</span><span class="p">)</span>
+            <span class="n">X_train_pca_optimal</span> <span class="o">=</span> <span class="n">pca_optimal</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+            <span class="n">X_test_pca_optimal</span> <span class="o">=</span> <span class="n">pca_optimal</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+            
+            <span class="c1"># Convert to DataFrame with component names</span>
+            <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;PC</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_optimal</span><span class="p">)]</span>
+            <span class="n">X_train_pca_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X_train_pca_optimal</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">X_train</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+            <span class="n">X_test_pca_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X_test_pca_optimal</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">X_test</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+            
+            <span class="c1"># Log feature importance</span>
+            <span class="n">feature_importance</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="n">pca_optimal</span><span class="o">.</span><span class="n">components_</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span>
+                <span class="n">index</span><span class="o">=</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span>
+            <span class="p">)</span>
+            
+            <span class="n">mlflow</span><span class="o">.</span><span class="n">log_params</span><span class="p">({</span>
+                <span class="s2">&quot;n_components_selected&quot;</span><span class="p">:</span> <span class="n">n_optimal</span><span class="p">,</span>
+                <span class="s2">&quot;variance_explained_selected&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pca_optimal</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span>
+            <span class="p">})</span>
+            
+            <span class="k">return</span> <span class="n">X_train_pca_df</span><span class="p">,</span> <span class="n">X_test_pca_df</span><span class="p">,</span> <span class="n">n_optimal</span><span class="p">,</span> <span class="n">feature_importance</span>
+        
+        <span class="k">return</span> <span class="n">X_train_pca</span><span class="p">,</span> <span class="n">X_test_pca</span><span class="p">,</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+
+<span class="c1"># First preprocess your data</span>
+<span class="n">preprocessor</span> <span class="o">=</span> <span class="n">CustomPreprocessor</span><span class="p">()</span>
+<span class="n">X_train_preprocessed</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test_preprocessed</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="c1"># Then run PCA workflow</span>
+<span class="n">X_train_pca</span><span class="p">,</span> <span class="n">X_test_pca</span><span class="p">,</span> <span class="n">n_optimal</span><span class="p">,</span> <span class="n">feature_importance</span> <span class="o">=</span> <span class="n">run_pca_workflow</span><span class="p">(</span>
+    <span class="n">X_train_preprocessed</span><span class="p">,</span> <span class="n">X_test_preprocessed</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of components needed for 90% variance: 16
+</pre></div>
+</div>
+<img alt="../_images/0977d6b356c3616a7413b93720e9db0b6561f3f9305b31a67dfe533143f1b823.png" src="../_images/0977d6b356c3616a7413b93720e9db0b6561f3f9305b31a67dfe533143f1b823.png" />
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="feature-selection">
+<h1>FEATURE SELECTION<a class="headerlink" href="#feature-selection" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">plot_feature_importance</span><span class="p">(</span><span class="n">feature_importance</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plots the feature importance for the first few principal components.</span>
+<span class="sd">    :param feature_importance: DataFrame of PCA components (loadings)</span>
+<span class="sd">    :param top_n: Number of top features to plot (default: 10)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Compute the absolute value of the components to determine feature importance</span>
+    <span class="n">feature_importance_abs</span> <span class="o">=</span> <span class="n">feature_importance</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
+
+    <span class="c1"># Sum the absolute values across components (to get total importance)</span>
+    <span class="n">feature_importance_sum</span> <span class="o">=</span> <span class="n">feature_importance_abs</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Sort by total importance (highest first)</span>
+    <span class="n">feature_importance_sorted</span> <span class="o">=</span> <span class="n">feature_importance_sum</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Select the top_n most important features</span>
+    <span class="n">top_features</span> <span class="o">=</span> <span class="n">feature_importance_sorted</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">top_n</span><span class="p">)</span>
+
+    <span class="c1"># Plot the top features</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">top_features</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;skyblue&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Top </span><span class="si">{</span><span class="n">top_n</span><span class="si">}</span><span class="s2"> Most Important Features Based on PCA&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Features&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Total Feature Importance (sum of absolute loadings)&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># After running the PCA workflow and obtaining feature importance</span>
+<span class="k">if</span> <span class="n">feature_importance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">plot_feature_importance</span><span class="p">(</span><span class="n">feature_importance</span><span class="p">,</span> <span class="n">n_optimal</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/7276e0297ff8a41685cb9f76273207328192218031fccb30b08dd54c4c78861c.png" src="../_images/7276e0297ff8a41685cb9f76273207328192218031fccb30b08dd54c4c78861c.png" />
+</div>
+</div>
+<ul class="simple">
+<li><p>Above are features that can be selected to capture 90% variance in the data and get predictions.</p></li>
+</ul>
+<section id="feature-selection-using-random-forest">
+<h2>FEATURE SELECTION USING RANDOM FOREST<a class="headerlink" href="#feature-selection-using-random-forest" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelEncoder</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Assuming df is your original DataFrame and &#39;ChurnLabel&#39; is the target column</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;ChurnLabel&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;ChurnLabel&#39;</span><span class="p">]</span>
+
+<span class="c1"># Label encode the target variable</span>
+<span class="n">le</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
+<span class="n">y_encoded</span> <span class="o">=</span> <span class="n">le</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Apply Custom Preprocessing</span>
+<span class="n">preprocessor</span> <span class="o">=</span> <span class="n">CustomPreprocessor</span><span class="p">()</span>
+<span class="n">X_preprocessed</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># Check that the shape of preprocessed data matches expectations</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original feature shape: </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Preprocessed feature shape: </span><span class="si">{</span><span class="n">X_preprocessed</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Train a RandomForest model to get feature importance</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_preprocessed</span><span class="p">,</span> <span class="n">y_encoded</span><span class="p">)</span>
+
+<span class="c1"># Get the feature importances</span>
+<span class="n">feature_importances</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">feature_importances_</span>
+
+<span class="c1"># Create a DataFrame for easier understanding of feature importances</span>
+<span class="n">feature_importance_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;Feature&#39;</span><span class="p">:</span> <span class="n">X_preprocessed</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+    <span class="s1">&#39;Importance&#39;</span><span class="p">:</span> <span class="n">feature_importances</span>
+<span class="p">})</span>
+
+<span class="c1"># Sort by importance</span>
+<span class="n">feature_importance_df</span> <span class="o">=</span> <span class="n">feature_importance_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Importance&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Set a threshold for feature selection</span>
+<span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.02</span>
+<span class="n">important_features</span> <span class="o">=</span> <span class="n">feature_importance_df</span><span class="p">[</span><span class="n">feature_importance_df</span><span class="p">[</span><span class="s1">&#39;Importance&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">]</span>
+
+<span class="c1"># Display important features</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">important_features</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original feature shape: (7043, 30)
+Preprocessed feature shape: (7043, 46)
+                           Feature  Importance
+2                     TotalCharges    0.160023
+1                   MonthlyCharges    0.136326
+0                     TenureMonths    0.135156
+37         Contract_Month-to-month    0.048923
+44  PaymentMethod_Electronic check    0.031305
+19               OnlineSecurity_No    0.026813
+17     InternetService_Fiber optic    0.026245
+28                  TechSupport_No    0.024340
+9                    Dependents_No    0.022650
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="feature-selection-with-correlation-threshold">
+<h1>FEATURE SELECTION WITH CORRELATION THRESHOLD<a class="headerlink" href="#feature-selection-with-correlation-threshold" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">correlation_threshold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.9</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove features that have a correlation higher than the given threshold.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    - X: The feature matrix (pandas DataFrame).</span>
+<span class="sd">    - threshold: The correlation threshold. Default is 0.9.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    - X_selected: The feature matrix with highly correlated features removed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Calculate the correlation matrix</span>
+    <span class="n">corr_matrix</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
+    
+    <span class="c1"># Create a boolean mask for features with correlation greater than the threshold</span>
+    <span class="n">upper_triangle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">),</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="c1"># Get columns to drop</span>
+    <span class="n">to_drop</span> <span class="o">=</span> <span class="p">[</span><span class="n">column</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">corr_matrix</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">)]</span>
+    
+    <span class="c1"># Drop the correlated columns</span>
+    <span class="n">X_selected</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">to_drop</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">X_selected</span>
+
+<span class="c1"># Apply the correlation threshold to the preprocessed data</span>
+<span class="n">X_selected</span> <span class="o">=</span> <span class="n">correlation_threshold</span><span class="p">(</span><span class="n">X_preprocessed</span><span class="p">)</span>
+
+<span class="c1"># Print the remaining features</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Remaining features after correlation thresholding:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X_selected</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Remaining features after correlation thresholding:
+Index([], dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="feature-selection-with-variance-threshold">
+<h1>FEATURE SELECTION WITH VARIANCE THRESHOLD<a class="headerlink" href="#feature-selection-with-variance-threshold" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <span class="n">VarianceThreshold</span>
+
+<span class="k">def</span> <span class="nf">variance_threshold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove features with variance below the given threshold.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    - X: The feature matrix (pandas DataFrame).</span>
+<span class="sd">    - threshold: The variance threshold. Features with variance lower than this value will be removed.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    - X_selected: The feature matrix with features having low variance removed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Initialize the VarianceThreshold</span>
+    <span class="n">selector</span> <span class="o">=</span> <span class="n">VarianceThreshold</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">)</span>
+    
+    <span class="c1"># Apply the variance threshold</span>
+    <span class="n">X_selected</span> <span class="o">=</span> <span class="n">selector</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    
+    <span class="c1"># Get the remaining feature names</span>
+    <span class="n">selected_columns</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">selector</span><span class="o">.</span><span class="n">get_support</span><span class="p">()]</span>
+    
+    <span class="c1"># Convert the result to a DataFrame with the selected columns</span>
+    <span class="n">X_selected</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X_selected</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">selected_columns</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">X_selected</span>
+
+<span class="c1"># Apply Variance Threshold to the preprocessed data</span>
+<span class="n">X_selected</span> <span class="o">=</span> <span class="n">variance_threshold</span><span class="p">(</span><span class="n">X_preprocessed</span><span class="p">)</span>
+
+<span class="c1"># Print the remaining features</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Remaining features after variance thresholding:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X_selected</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Remaining features after variance thresholding:
+Index([&#39;TenureMonths&#39;, &#39;MonthlyCharges&#39;, &#39;TotalCharges&#39;, &#39;Gender_Female&#39;,
+       &#39;Gender_Male&#39;, &#39;SeniorCitizen_no&#39;, &#39;SeniorCitizen_yes&#39;, &#39;Partner_No&#39;,
+       &#39;Partner_Yes&#39;, &#39;Dependents_No&#39;, &#39;Dependents_Yes&#39;, &#39;MultipleLines_No&#39;,
+       &#39;MultipleLines_Yes&#39;, &#39;InternetService_DSL&#39;,
+       &#39;InternetService_Fiber optic&#39;, &#39;InternetService_No&#39;,
+       &#39;OnlineSecurity_No&#39;, &#39;OnlineSecurity_No internet service&#39;,
+       &#39;OnlineSecurity_Yes&#39;, &#39;OnlineBackup_No&#39;,
+       &#39;OnlineBackup_No internet service&#39;, &#39;OnlineBackup_Yes&#39;,
+       &#39;DeviceProtection_No&#39;, &#39;DeviceProtection_No internet service&#39;,
+       &#39;DeviceProtection_Yes&#39;, &#39;TechSupport_No&#39;,
+       &#39;TechSupport_No internet service&#39;, &#39;TechSupport_Yes&#39;, &#39;StreamingTV_No&#39;,
+       &#39;StreamingTV_No internet service&#39;, &#39;StreamingTV_Yes&#39;,
+       &#39;StreamingMovies_No&#39;, &#39;StreamingMovies_No internet service&#39;,
+       &#39;StreamingMovies_Yes&#39;, &#39;Contract_Month-to-month&#39;, &#39;Contract_One year&#39;,
+       &#39;Contract_Two year&#39;, &#39;PaperlessBilling_No&#39;, &#39;PaperlessBilling_Yes&#39;,
+       &#39;PaymentMethod_Bank transfer (automatic)&#39;,
+       &#39;PaymentMethod_Credit card (automatic)&#39;,
+       &#39;PaymentMethod_Electronic check&#39;, &#39;PaymentMethod_Mailed check&#39;],
+      dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -2767,7 +3269,7 @@ Name: Column, dtype: object
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">&lt;no title&gt;</p>
+        <p class="prev-next-title">COMPARE F1 SCORES</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -2801,6 +3303,13 @@ Name: Column, dtype: object
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocessing-pipeline">PREPROCESSING PIPELINE:</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-analysis">PCA ANALYSIS</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection">FEATURE SELECTION</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-using-random-forest">FEATURE SELECTION USING RANDOM FOREST</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-with-correlation-threshold">FEATURE SELECTION WITH CORRELATION THRESHOLD</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-with-variance-threshold">FEATURE SELECTION WITH VARIANCE THRESHOLD</a></li>
 </ul>
 
   </nav></div>
