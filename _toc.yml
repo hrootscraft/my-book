@@ -6,7 +6,7 @@ root: index
 chapters:
   - file: book/markdown
     title: Introduction
-  - file: book/1
+  - file: book/1  
     title: Normalize Database    
   - file: book/2
     title: EDA and Preprocessing    
